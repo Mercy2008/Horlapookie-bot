@@ -66,7 +66,7 @@ export default {
     if (!args[0]) {
       const status = settings.enabled ? '✅ Enabled' : '❌ Disabled';
       await sock.sendMessage(from, {
-        text: `🛡️ *Antibug/Anti-Spam Status*\n\n*Current Status:* ${status}\n\n💡 *Usage:*\n• ${config.prefix}antibug on - Enable\n• ${config.prefix}antibug off - Disable\n\n*When enabled:* Users sending more than 2 messages per second will be automatically blocked.`
+        text: `🛡️ *Antibug/Anti-Spam Status*\n\n*Current Status:* ${status}\n\n💡 *Usage:*\n• ${config.prefix}antibug on - Enable\n• ${config.prefix}antibug off - Disable\n\n*Protection Details:*\n• Triggers when: >2 messages in 1 second\n• Action taken: Automatic block\n• Notification sent to group\n\n*Note:* Make sure the bot has admin permissions to block users in groups.`
       }, { quoted: msg });
       return;
     }

@@ -21,17 +21,13 @@ const __dirname = path.dirname(__filename);
 
 // STARTUP GUARD: Prevent WhatsApp connection during testing/fixes
 // Set TEST_MODE_ONLY=true in environment to load commands without connecting
-if (process.env.TEST_MODE_ONLY === 'true') {
+const TEST_MODE = process.env.TEST_MODE_ONLY === 'true';
+if (TEST_MODE) {
   console.log('\n' + '='.repeat(60));
   console.log('🛑 TEST MODE ACTIVATED - Bot will load commands but NOT connect to WhatsApp');
   console.log('='.repeat(60) + '\n');
   
   console.log('✅ Loading bot configuration...');
-  console.log('✅ Commands would load here...');
-  console.log('✅ All systems ready (WhatsApp connection SKIPPED)');
-  console.log('\n💡 To connect to WhatsApp, remove TEST_MODE_ONLY environment variable');
-  console.log('\n' + '='.repeat(60));
-  process.exit(0);
 }
 
 // Import config to get the prefix
@@ -541,6 +537,51 @@ commands.set('dict', dictionaryCommand);
 commands.set('define', dictionaryCommand);
 commands.set('meaning', dictionaryCommand);
 
+// Display loaded commands in test mode
+if (TEST_MODE) {
+  console.log('\n' + '='.repeat(60));
+  console.log('📋 LOADED PUBLIC COMMANDS:');
+  console.log('='.repeat(60));
+  
+  const uniqueCommands = new Map();
+  for (const [name, cmd] of commands.entries()) {
+    if (!uniqueCommands.has(cmd.name || cmd.nomCom)) {
+      uniqueCommands.set(cmd.name || cmd.nomCom, cmd);
+    }
+  }
+  
+  uniqueCommands.forEach((cmd, name) => {
+    const aliases = cmd.aliases ? ` (aliases: ${cmd.aliases.join(', ')})` : '';
+    console.log(`  ✓ ${name}${aliases}`);
+  });
+  
+  console.log(`\nTotal: ${uniqueCommands.size} commands`);
+  
+  console.log('\n' + '='.repeat(60));
+  console.log('📋 LOADED SELF COMMANDS:');
+  console.log('='.repeat(60));
+  
+  const uniqueSelfCommands = new Map();
+  for (const [name, cmd] of selfCommands.entries()) {
+    if (!uniqueSelfCommands.has(cmd.name || cmd.nomCom)) {
+      uniqueSelfCommands.set(cmd.name || cmd.nomCom, cmd);
+    }
+  }
+  
+  uniqueSelfCommands.forEach((cmd, name) => {
+    const aliases = cmd.aliases ? ` (aliases: ${cmd.aliases.join(', ')})` : '';
+    console.log(`  ✓ ${name}${aliases}`);
+  });
+  
+  console.log(`\nTotal: ${uniqueSelfCommands.size} commands`);
+  
+  console.log('\n' + '='.repeat(60));
+  console.log('✅ All systems ready (WhatsApp connection SKIPPED)');
+  console.log('\n💡 To connect to WhatsApp, remove TEST_MODE_ONLY environment variable');
+  console.log('\n' + '='.repeat(60));
+  process.exit(0);
+}
+
 async function startBot() {
   try {
     const { state, saveCreds } = await setupAuthState();
@@ -803,11 +844,12 @@ Type ${botPrefix}menu to see all commands
               const antibugSettings = loadAntibugSettings();
 
               if (antibugSettings.enabled) {
-                console.log(`[ANTIBUG] User ${userId} sent ${messageCount[userId].length} messages in 1 second - BLOCKING`);
+                console.log(color(`[ANTIBUG] User ${userId} sent ${messageCount[userId].length} messages in 1 second - BLOCKING`, 'red'));
                 
                 try {
                   // Block the user
                   await sock.updateBlockStatus(userId, 'block');
+                  console.log(color(`[ANTIBUG] Successfully blocked ${userId}`, 'green'));
                   
                   // Send notification to the chat
                   await sock.sendMessage(msg.key.remoteJid, {
@@ -818,8 +860,10 @@ Type ${botPrefix}menu to see all commands
                   delete messageCount[userId];
                   continue; // Skip processing this message
                 } catch (blockError) {
-                  console.log(`[ANTIBUG] Failed to block user: ${blockError.message}`);
+                  console.log(color(`[ANTIBUG] Failed to block user: ${blockError.message}`, 'red'));
                 }
+              } else {
+                console.log(color(`[ANTIBUG] Spam detected but antibug is disabled. Enable with ${COMMAND_PREFIX}antibug on`, 'yellow'));
               }
             }
           }
