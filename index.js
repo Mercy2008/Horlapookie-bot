@@ -847,14 +847,17 @@ Type ${botPrefix}menu to see all commands
                 console.log(color(`[ANTIBUG] User ${userId} sent ${messageCount[userId].length} messages in 1 second - BLOCKING`, 'red'));
                 
                 try {
-                  // Block the user
+                  // Block the user (works in both DMs and groups)
                   await sock.updateBlockStatus(userId, 'block');
                   console.log(color(`[ANTIBUG] Successfully blocked ${userId}`, 'green'));
                   
-                  // Send notification to the chat
-                  await sock.sendMessage(msg.key.remoteJid, {
-                    text: `🛡️ *Antibug Protection Activated*\n\n❌ User blocked for sending ${messageCount[userId].length} messages in 1 second.\n\n*Reason:* Spam/Bug detected`
-                  }, { quoted: msg });
+                  // Send notification to the chat (only in groups, skip for DMs since user is blocked)
+                  const chatJid = msg.key.remoteJid;
+                  if (chatJid.endsWith('@g.us')) {
+                    await sock.sendMessage(chatJid, {
+                      text: `🛡️ *Antibug Protection Activated*\n\n❌ User blocked for sending ${messageCount[userId].length} messages in 1 second.\n\n*Reason:* Spam/Bug detected`
+                    }, { quoted: msg });
+                  }
 
                   // Clear the message count for the user after blocking
                   delete messageCount[userId];

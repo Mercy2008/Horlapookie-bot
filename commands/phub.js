@@ -11,7 +11,7 @@ const phub = horla({
 
   if (!args || args.length === 0) {
     await sock.sendMessage(from, {
-      text: `*Example, ${userName}: * ?phub text`
+      text: `*Example, ${userName}: * .phub text1|text2`
     }, { quoted: msg });
     return;
   }
@@ -22,10 +22,14 @@ const phub = horla({
     }, { quoted: msg });
 
     const text = Array.isArray(args) ? args.join(' ') : args.toString();
+    const textParts = text.split('|');
+    const text1 = textParts[0]?.trim() || 'Porn';
+    const text2 = textParts[1]?.trim() || 'Hub';
+    
     let anu;
     
     try {
-      anu = await mumaker.textpro("https://en.ephoto360.com/create-pornhub-style-logos-online-free-549.html", text);
+      anu = await mumaker.textpro("https://textpro.me/pornhub-style-logo-online-generator-free-977.html", [text1, text2]);
     } catch (apiError) {
       console.error('[PHUB] API Error:', apiError);
       throw new Error('Logo generation service is currently unavailable. Please try again later.');

@@ -21,7 +21,7 @@ const pubg = horla({
       text: "*Processing PUBG logo...*"
     }, { quoted: msg });
 
-    const text = Array.isArray(args) ? args.join(' ') : args.toString();
+    const text = (Array.isArray(args) ? args.join(' ') : args.toString()).toUpperCase();
     let anu;
     
     try {
