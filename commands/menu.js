@@ -386,7 +386,8 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}qr - qr command
 ┃✪  ${prefix}reboot - reboot command
 ┃✪  ${prefix}trt2 - trt2 command
-┃✪  ${prefix}update - update command
+┃✪  ${prefix}checkupdate - check for bot updates
+┃✪  ${prefix}update - update bot from GitHub
 ╰━━━━━━━━━━━━━━━━━⊷
 
 ╭━━━✦❮ 🔄 AUTOMATION COMMANDS ❯✦━⊷

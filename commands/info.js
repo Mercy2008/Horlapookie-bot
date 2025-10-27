@@ -656,7 +656,38 @@ Player: ${config.prefix}wrg internet
   wordgame: `🎮 Word Random Game (Alias)
 
 🔹 ${config.prefix}wordgame - alias for wrg command
-🔹 See: ${config.prefix}info wrg for full details`
+🔹 See: ${config.prefix}info wrg for full details`,
+
+  checkupdate: `🔍 Check for Bot Updates
+
+🔹 ${config.prefix}checkupdate - check for new updates on GitHub
+🔹 ${config.prefix}checkupdates - alias for checkupdate
+🔹 ${config.prefix}updates - alias for checkupdate
+🔹 ${config.prefix}version - alias for checkupdate
+
+📝 *What it does:*
+• Fetches latest commit from GitHub
+• Compares with your current version
+• Shows update details if available
+• No modifications made (safe to use)
+
+💡 *After checking, if update available:*
+Use ${config.prefix}update to install the latest version`,
+
+  checkupdates: `🔍 Check for Bot Updates (Alias)
+
+🔹 ${config.prefix}checkupdates - alias for checkupdate
+🔹 See: ${config.prefix}info checkupdate for details`,
+
+  updates: `🔍 Check for Bot Updates (Alias)
+
+🔹 ${config.prefix}updates - alias for checkupdate
+🔹 See: ${config.prefix}info checkupdate for details`,
+
+  version: `🔍 Check Bot Version (Alias)
+
+🔹 ${config.prefix}version - alias for checkupdate
+🔹 See: ${config.prefix}info checkupdate for details`
 };
 
 export default {

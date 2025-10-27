@@ -31,7 +31,6 @@ export default {
         '.env',
         'settings.json',
         'data/',
-        'tmp/',
         'instances/',
         'auth_info/',
         'node_modules/',
@@ -83,14 +82,24 @@ export default {
         // Check if git is initialized
         await execAsync('git status');
         
-        // Reset any local changes (except preserved files)
-        await execAsync('git stash');
+        // Make sure we have the remote configured correctly
+        try {
+          await execAsync('git remote remove origin');
+        } catch (e) {
+          // Remote doesn't exist, that's fine
+        }
+        await execAsync('git remote add origin https://github.com/horlapookie/Horlapookie-bot.git');
         
-        // Pull latest changes
+        // Fetch latest changes
+        await execAsync('git fetch origin main');
+        
+        // Reset any local changes
+        await execAsync('git reset --hard origin/main');
+        
         const { stdout: gitOutput } = await execAsync('git pull origin main');
         console.log('[UPDATE] Git pull output:', gitOutput);
         
-        if (gitOutput.includes('Already up to date')) {
+        if (gitOutput.includes('Already up to date') || gitOutput.includes('Already up-to-date')) {
           await sock.sendMessage(from, {
             text: '✅ *Bot is already up to date!*\n\n🎉 No new changes found on GitHub.\n📋 Current version is the latest.'
           }, { quoted: msg });
@@ -102,7 +111,7 @@ export default {
         
       } catch (gitError) {
         // If git fails, clone fresh repository
-        console.log('[UPDATE] Git pull failed, attempting fresh clone...');
+        console.log('[UPDATE] Git pull failed, attempting fresh clone:', gitError.message);
         
         await sock.sendMessage(from, {
           text: '🔄 *Performing fresh installation...*\n\n⚠️ Git history unavailable, downloading latest version...'
@@ -128,9 +137,8 @@ export default {
         // Clone fresh repository
         await execAsync('git clone https://github.com/horlapookie/Horlapookie-bot.git temp_repo');
         await execAsync('cp -r temp_repo/* .');
+        await execAsync('cp -r temp_repo/.* . 2>/dev/null || true');
         await execAsync('rm -rf temp_repo');
-        await execAsync('git init');
-        await execAsync('git remote add origin https://github.com/horlapookie/Horlapookie-bot.git');
       }
 
       await sock.sendMessage(from, {
