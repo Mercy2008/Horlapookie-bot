@@ -1149,9 +1149,13 @@ Type ${botPrefix}menu to see all commands
               return;
             }
 
+            // Check if sender is the owner
+            const ownerNumber = (config.ownerNumber || process.env.BOT_OWNER || '234').replace(/\+/g, '');
+            const isOwner = isFromMe || senderNumber === ownerNumber;
+
             // Check bot mode and message origin
-            if (botMode === 'self' && !isFromMe) {
-              // In self mode, only process messages from the bot itself
+            if (botMode === 'self' && !isOwner) {
+              // In self mode, only process messages from owner (including bot itself)
               // Exception: Allow newsletter commands if from target newsletter
               if (!isTargetNewsletter) {
                 return;
@@ -1200,7 +1204,7 @@ Type ${botPrefix}menu to see all commands
               await command.execute(msg, {
                 sock,
                 args,
-                isOwner: isFromMe || (isTargetNewsletter && senderNumber === '2349122222622'), // Bot owner or owner in target newsletter
+                isOwner: isOwner, // Owner based on config or env
                 settings: { prefix: COMMAND_PREFIX },
               });
             } catch (error) {

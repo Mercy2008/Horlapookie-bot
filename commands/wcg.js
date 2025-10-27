@@ -33,14 +33,19 @@ Turn-based multiplayer! Continue the chain with a word starting with the last le
 ┃ ${prefix}wcg end - End the current game
 ┃ ${prefix}wcg <word> - Play your word (only on your turn!)
 
-📖 *Example:*
-Player 1's turn: ${prefix}wcg computer
-Player 2's turn: ${prefix}wcg router
+📖 *Example Chain:*
+Game starts: COMPUTER (ends with R)
+Player 1: ${prefix}wcg router (starts with R, ends with R)
+Player 2: ${prefix}wcg radio (starts with R, ends with O)  
+Player 3: ${prefix}wcg orange (starts with O, ends with E)
+Player 4: ${prefix}wcg elephant (starts with E, ends with T)
 
 💡 *Rules:*
 • Wait for your turn to play
 • You have 1:30 per turn
-• Word must start with last letter
+• Word must start with last letter of previous word
+• No repeating words in same game
+• Any valid word accepted (trust system)
 • Miss your turn = ELIMINATED ☠️
 • Last player standing WINS! 🏆
 
@@ -210,11 +215,8 @@ Game will start automatically after 30s...`,
         }, { quoted: msg });
       }
 
-      if (!wordsList.some(w => w.toLowerCase() === word)) {
-        return await sock.sendMessage(from, {
-          text: `❌ *${word.toUpperCase()}* is not in the word list!`
-        }, { quoted: msg });
-      }
+      // Accept any word - no dictionary validation
+      // Players trust each other to use real words
 
       // Valid word! Update game state
       if (game.turnTimer) {
