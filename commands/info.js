@@ -588,7 +588,70 @@ const commandInfos = {
 🔹 ?generate <instruction> : Alias for sion
 🔹 Reply to an image with your instruction
 🔹 Example: Reply to image with "?sion describe this image"
-🔹 Uses Google Gemini AI for image analysis`
+🔹 Uses Google Gemini AI for image analysis`,
+
+  wcg: `🎮 Word Chain Game
+
+📝 *How to Play:*
+Continue the word chain by providing a word that starts with the last letter of the previous word.
+
+⚡ *Commands:*
+🔹 ${config.prefix}wcg - show game help
+🔹 ${config.prefix}wcg start - start a new game
+🔹 ${config.prefix}wcg end - end the current game
+🔹 ${config.prefix}wcg <word> - play your word
+
+📖 *Example:*
+Player 1: ${config.prefix}wcg computer
+Player 2: ${config.prefix}wcg router
+Player 3: ${config.prefix}wcg random
+
+💡 *Rules:*
+• Word must start with last letter of previous word
+• Word must be valid (from word list)
+• No repeating words in same game`,
+
+  wordchain: `🎮 Word Chain Game (Alias)
+
+🔹 ${config.prefix}wordchain - alias for wcg command
+🔹 See: ${config.prefix}info wcg for full details`,
+
+  chainword: `🎮 Word Chain Game (Alias)
+
+🔹 ${config.prefix}chainword - alias for wcg command
+🔹 See: ${config.prefix}info wcg for full details`,
+
+  wrg: `🎮 Word Random Game
+
+📝 *How to Play:*
+Submit valid words based on the given category prompt within the time limit!
+
+⚡ *Commands:*
+🔹 ${config.prefix}wrg - show game help
+🔹 ${config.prefix}wrg start - start a new game
+🔹 ${config.prefix}wrg end - end the current game
+🔹 ${config.prefix}wrg <word> - submit your word
+
+📖 *Example:*
+Game Prompt: "Technology words"
+Player: ${config.prefix}wrg computer
+Player: ${config.prefix}wrg internet
+
+💡 *Rules:*
+• Word must be valid (from word list)
+• Submit as many words as you can
+• No repeating words in same game
+• Game ends after 5 minutes or when stopped`,
+
+  randomword: `🎮 Word Random Game (Alias)
+
+🔹 ${config.prefix}randomword - alias for wrg command
+🔹 See: ${config.prefix}info wrg for full details`,
+
+  wordgame: `🎮 Word Random Game (Alias)
+
+🔹 ${config.prefix}wordgame - alias for wrg command
+🔹 See: ${config.prefix}info wrg for full details`
 };
 
 export default {

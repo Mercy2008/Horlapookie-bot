@@ -172,6 +172,17 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}wolf role - check your assigned role
 ╰━━━━━━━━━━━━━━━━━⊷
 
+╭━━━✦❮ 🔗 WORD CHAIN GAMES ❯✦━⊷
+┃✪  ${prefix}wcg - Word Chain Game
+┃✪  ${prefix}wcg start - start word chain game
+┃✪  ${prefix}wcg end - end current word chain game
+┃✪  ${prefix}wcg <word> - play your word
+┃✪  ${prefix}wrg - Word Random Game
+┃✪  ${prefix}wrg start - start random word game
+┃✪  ${prefix}wrg end - end current random word game
+┃✪  ${prefix}wrg <word> - submit your word
+╰━━━━━━━━━━━━━━━━━⊷
+
 ╭━━━✦❮ 🎨 CREATIVITY & ART ❯✦━⊷
 ┃✪  ${prefix}quote - quote command
 ┃✪  ${prefix}wallpaper - wallpaper command
