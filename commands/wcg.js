@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import axios from 'axios';
 
 const emojisPath = path.join(process.cwd(), 'data', 'emojis.json');
 const emojis = JSON.parse(fs.readFileSync(emojisPath, 'utf8'));
@@ -9,6 +10,20 @@ const wordsList = fs.readFileSync(wordsPath, 'utf8').split('\n').filter(w => w.t
 
 const wcgGames = new Map();
 const TURN_TIME = 90000; // 1 minute 30 seconds
+
+// Dictionary validation function
+async function isValidWord(word) {
+  try {
+    // Use Free Dictionary API to validate the word
+    const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`, {
+      timeout: 5000
+    });
+    return response.status === 200;
+  } catch (error) {
+    // If word not found or API error, return false
+    return false;
+  }
+}
 
 export default {
   name: "wcg",
@@ -44,9 +59,9 @@ Player 4: ${prefix}wcg elephant (starts with E, ends with T)
 • Wait for your turn to play
 • You have 1:30 per turn
 • Word must be at least 4 letters long
+• Word must be a valid English word (dictionary checked)
 • Word must start with last letter of previous word
 • No repeating words in same game
-• Any valid word accepted (trust system)
 • Miss your turn = ELIMINATED ☠️
 • Last player standing WINS! 🏆
 
@@ -216,8 +231,13 @@ Game will start automatically after 30s...`,
         }, { quoted: msg });
       }
 
-      // Accept any word - no dictionary validation
-      // Players trust each other to use real words
+      // Validate word using dictionary API
+      const isValid = await isValidWord(word);
+      if (!isValid) {
+        return await sock.sendMessage(from, {
+          text: `❌ *${word.toUpperCase()}* is not a valid English word!\n\n💡 Make sure the spelling is correct.`
+        }, { quoted: msg });
+      }
 
       // Valid word! Update game state
       if (game.turnTimer) {
