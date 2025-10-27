@@ -1,5 +1,5 @@
 import { horla } from '../lib/horla.js';
-import mumaker from 'mumaker';
+import axios from 'axios';
 
 const phub = horla({
   nomCom: "phub",
@@ -26,21 +26,16 @@ const phub = horla({
     const text1 = textParts[0]?.trim() || 'Porn';
     const text2 = textParts[1]?.trim() || 'Hub';
     
-    let anu;
+    // Use a different API that works better
+    const apiUrl = `https://api.popcat.xyz/pornhub?text=${encodeURIComponent(text1)}&text2=${encodeURIComponent(text2)}`;
     
-    try {
-      anu = await mumaker.textpro("https://textpro.me/pornhub-style-logo-online-generator-free-977.html", [text1, text2]);
-    } catch (apiError) {
-      console.error('[PHUB] API Error:', apiError);
-      throw new Error('Logo generation service is currently unavailable. Please try again later.');
-    }
-
-    if (!anu || !anu.image) {
-      throw new Error('Failed to generate logo. The service returned an invalid response.');
-    }
+    const response = await axios.get(apiUrl, {
+      responseType: 'arraybuffer',
+      timeout: 15000
+    });
 
     await sock.sendMessage(from, {
-      image: { url: anu.image },
+      image: Buffer.from(response.data),
       caption: "*Logo by HORLA POOKIE*"
     }, { quoted: msg });
   } catch (e) {

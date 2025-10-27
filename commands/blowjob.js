@@ -29,28 +29,21 @@ export default {
         react: { text: emojis.processing, key: msg.key }
       });
 
-      // Send images asynchronously without waiting
-      const sendImage = async (index) => {
-        try {
-          const response = await axios.get(url);
-          const imageUrl = response.data.url;
-          await sock.sendMessage(dest, {
-            image: { url: imageUrl }
-          }, { quoted: msg });
-        } catch (err) {
-          console.error(`[BLOWJOB] Error sending image ${index}:`, err.message);
-        }
-      };
-
-      // Send all 5 images asynchronously
-      const promises = [];
+      // Send images one by one without blocking
       for (let i = 0; i < 5; i++) {
-        promises.push(sendImage(i + 1));
+        // Don't await - fire and forget for async sending
+        axios.get(url)
+          .then(response => {
+            sock.sendMessage(dest, {
+              image: { url: response.data.url }
+            }, { quoted: msg });
+          })
+          .catch(err => {
+            console.error(`[BLOWJOB] Error sending image ${i + 1}:`, err.message);
+          });
       }
 
-      // Wait for all images to be sent
-      await Promise.all(promises);
-
+      // React success immediately
       await sock.sendMessage(dest, {
         react: { text: emojis.success, key: msg.key }
       });
