@@ -36,7 +36,9 @@ export default {
 Submit valid words based on the given category prompt within the time limit!
 
 ⚡ *Commands:*
-┃ ${prefix}wrg start - Start a new game
+┃ ${prefix}wrg start - Start multiplayer game (default)
+┃ ${prefix}wrg start solo - Start solo game (personal challenge)
+┃ ${prefix}wrg start multi - Start multiplayer game
 ┃ ${prefix}wrg end - End the current game
 ┃ ${prefix}wrg <word> - Submit your word
 
@@ -44,6 +46,10 @@ Submit valid words based on the given category prompt within the time limit!
 Game Prompt: "Technology words"
 Player: ${prefix}wrg computer
 Player: ${prefix}wrg internet
+
+🎮 *Game Modes:*
+👥 *Multiplayer:* Everyone can participate and compete
+👤 *Solo:* Personal challenge, only you can play
 
 💡 *Rules:*
 • Word must be valid (from word list)
@@ -59,23 +65,36 @@ Player: ${prefix}wrg internet
       const command = args[0].toLowerCase();
 
       if (command === 'start') {
+        // Check if mode argument is provided (solo or multi)
+        const mode = args[1]?.toLowerCase();
+        const isSolo = mode === 'solo' || mode === 'single' || mode === '1';
+        const isMulti = mode === 'multi' || mode === 'multiplayer' || !mode; // Default to multi
+        
         const category = categories[Math.floor(Math.random() * categories.length)];
         const categoryWords = category.keywords.length > 0
           ? wordsList.filter(w => category.keywords.some(k => w.toLowerCase().includes(k)))
           : wordsList;
 
+        const playerJid = msg.key.participant || msg.key.remoteJid;
+
         wrgGames.set(from, {
           category: category.name,
           validWords: categoryWords,
           usedWords: [],
-          players: new Map(),
+          players: new Map([[playerJid, 0]]), // Initialize with starter
           startTime: Date.now(),
-          timeLimit: 5 * 60 * 1000
+          timeLimit: 5 * 60 * 1000,
+          mode: isSolo ? 'solo' : 'multi'
         });
+
+        const modeText = isSolo 
+          ? '👤 *Mode:* Solo (Personal Challenge)\n⏱️ Beat your own high score!'
+          : '👥 *Mode:* Multiplayer (Everyone can join)\n🏆 Compete with others!';
 
         await sock.sendMessage(from, {
           text: `🎮 *WORD RANDOM GAME STARTED!* 🎮
 
+${modeText}
 🎯 Category: *${category.name}*
 ⏱️ Time Limit: 5 minutes
 
@@ -173,6 +192,18 @@ Thanks for playing! 🎮`
 
       const game = wrgGames.get(from);
       const word = args.join(' ').toLowerCase().trim();
+      const playerJid = msg.key.participant || msg.key.remoteJid;
+
+      // Solo mode: Only the game starter can play
+      if (game.mode === 'solo') {
+        const gameStarter = Array.from(game.players.keys())[0];
+        if (playerJid !== gameStarter) {
+          return await sock.sendMessage(from, {
+            text: `❌ This is a solo game! Only @${gameStarter.split('@')[0]} can play.\n💡 Start your own game: ${prefix}wrg start solo`,
+            mentions: [gameStarter]
+          }, { quoted: msg });
+        }
+      }
 
       if (!word || word.length < 2) {
         return await sock.sendMessage(from, {
@@ -201,8 +232,6 @@ Thanks for playing! 🎮`
       }
 
       game.usedWords.push(word);
-
-      const playerJid = msg.key.participant || msg.key.remoteJid;
       const currentScore = game.players.get(playerJid) || 0;
       game.players.set(playerJid, currentScore + 1);
 
