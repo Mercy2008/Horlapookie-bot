@@ -590,26 +590,31 @@ const commandInfos = {
 🔹 Example: Reply to image with "?sion describe this image"
 🔹 Uses Google Gemini AI for image analysis`,
 
-  wcg: `🎮 Word Chain Game
+  wcg: `🎮 Word Chain Game - TURN-BASED ELIMINATION
 
 📝 *How to Play:*
-Continue the word chain by providing a word that starts with the last letter of the previous word.
+Turn-based multiplayer! Continue the chain with a word starting with the last letter. Miss your turn = ELIMINATED!
 
 ⚡ *Commands:*
 🔹 ${config.prefix}wcg - show game help
-🔹 ${config.prefix}wcg start - start a new game
+🔹 ${config.prefix}wcg start - start a new game (30s join phase)
+🔹 ${config.prefix}wcg join - join the game during join phase
 🔹 ${config.prefix}wcg end - end the current game
-🔹 ${config.prefix}wcg <word> - play your word
+🔹 ${config.prefix}wcg <word> - play your word (only on your turn!)
 
 📖 *Example:*
-Player 1: ${config.prefix}wcg computer
-Player 2: ${config.prefix}wcg router
-Player 3: ${config.prefix}wcg random
+Player 1's turn: ${config.prefix}wcg computer ✅
+Player 2's turn: ${config.prefix}wcg router ✅
+Player 1's turn: ${config.prefix}wcg random ✅
 
 💡 *Rules:*
+• Wait for your turn to play (tagged when it's your turn)
+• You have 1 minute 30 seconds per turn ⏰
 • Word must start with last letter of previous word
 • Word must be valid (from word list)
-• No repeating words in same game`,
+• No repeating words in same game
+• Miss your turn = ELIMINATED ☠️
+• Last player standing WINS! 🏆`,
 
   wordchain: `🎮 Word Chain Game (Alias)
 
