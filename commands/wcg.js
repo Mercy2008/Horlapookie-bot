@@ -43,6 +43,7 @@ Player 4: ${prefix}wcg elephant (starts with E, ends with T)
 💡 *Rules:*
 • Wait for your turn to play
 • You have 1:30 per turn
+• Word must be at least 4 letters long
 • Word must start with last letter of previous word
 • No repeating words in same game
 • Any valid word accepted (trust system)
@@ -188,9 +189,9 @@ Game will start automatically after 30s...`,
 
       const word = args.join(' ').toLowerCase().trim();
 
-      if (!word || word.length < 2) {
+      if (!word || word.length < 4) {
         return await sock.sendMessage(from, {
-          text: `❌ Please provide a valid word (minimum 2 letters)!`
+          text: `❌ Please provide a valid word (minimum 4 letters)!`
         }, { quoted: msg });
       }
 
