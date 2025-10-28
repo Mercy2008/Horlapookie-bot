@@ -106,11 +106,21 @@ The easiest way to deploy this bot is with Render's one-click deploy:
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 **How it works:**
-1. Click the "Deploy to Render" button above
-2. Sign in to Render (or create a free account)
-3. Render will automatically detect your forked repository
-4. Configure your environment variables (SESSION-ID, BOT_PREFIX, etc.)
-5. Click "Create Web Service" and your bot will be deployed!
+1. **Fork this repository** to your GitHub account first
+2. Click the "Deploy to Render" button above
+3. Sign in to Render (or create a free account)
+4. **Connect your GitHub account** to Render
+5. Select **your forked repository** from the list
+6. Render will automatically detect the `render.yaml` blueprint
+7. Configure your environment variables:
+   - `BOT_SESSION_DATA` - Your session ID (get from https://horlapookie-session.onrender.com)
+   - `BOT_OWNER` - Your WhatsApp number (e.g., 234XXXXXXXXXX)
+   - `BOT_PREFIX` - Command prefix (default: `.`)
+   - `BOT_NAME` - Your bot name
+   - Optional: `OPENAI_API_KEY`, `GEMINI_API_KEY`
+8. Click "Create Web Service" and your bot will be deployed using Docker!
+
+**Important:** The bot uses **Docker** for deployment to ensure all system libraries (libvips, cairo, pango, ffmpeg) are properly installed. This prevents GLib-GObject errors and ensures stable operation.
 
 ### Prerequisites
 - Node.js 18+ installed
@@ -185,12 +195,16 @@ Need assistance with setup? Contact the creator:
 
 ### ☁️ Why Deploy to Render?
 - **✅ Free Tier Available:** Get started with Render's free plan
-- **🔧 Auto-Detection:** Automatically detects your repository and configuration
-- **🐳 Docker Support:** Uses our optimized Dockerfile for reliability
+- **🔧 Auto-Detection:** Automatically detects `render.yaml` blueprint from your forked repo
+- **🐳 Docker Support:** Uses our optimized Dockerfile with all system dependencies pre-installed
+  - Includes: libvips, cairo, pango, ffmpeg, and all native modules
+  - Prevents GLib-GObject errors and ensures stable operation
+  - No manual dependency installation required
 - **📊 Built-in Monitoring:** Track your bot's performance and uptime
 - **🔄 Auto-Deploy:** Automatically redeploys when you push to GitHub
 - **🌐 Custom Domains:** Connect your own domain (optional)
 - **⚡ Fast Deployment:** Bot online in minutes, not hours
+- **🔐 Secure:** Environment variables stored securely in Render dashboard
 
 ## 📋 Command Categories
 
