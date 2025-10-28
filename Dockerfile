@@ -6,6 +6,7 @@ WORKDIR /app
 # Install system dependencies for native modules (fixes GLib-GObject error)
 RUN apt-get update && apt-get install -y \
     libvips-dev \
+    libvips42 \
     libcairo2-dev \
     libpango1.0-dev \
     libjpeg-dev \
@@ -15,6 +16,8 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     build-essential \
     python3 \
+    g++ \
+    make \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,8 +25,14 @@ RUN apt-get update && apt-get install -y \
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install --production --ignore-scripts && \
-    npm cache clean --force
+# First install production dependencies
+RUN npm install --production --legacy-peer-deps
+
+# Rebuild native modules to ensure they work in the container
+RUN npm rebuild || true
+
+# Clean npm cache
+RUN npm cache clean --force
 
 # Copy application files
 COPY . .
