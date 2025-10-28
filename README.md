@@ -114,9 +114,10 @@ The easiest way to deploy this bot is with Render's one-click deploy:
 6. Render will automatically detect the `render.yaml` blueprint
 7. Configure your environment variables:
    - `BOT_SESSION_DATA` - Your session ID (get from https://horlapookie-session.onrender.com)
-   - `BOT_OWNER` - Your WhatsApp number (e.g., 234XXXXXXXXXX)
+   - `BOT_OWNER` - Your WhatsApp number **without country code prefix** (e.g., `2348028336218`)
    - `BOT_PREFIX` - Command prefix (default: `.`)
-   - `BOT_NAME` - Your bot name
+   - `BOT_NAME` - Your bot name (optional)
+   - `BOT_OWNER_NAME` - Your display name (optional)
    - Optional: `OPENAI_API_KEY`, `GEMINI_API_KEY`
 8. Click "Create Web Service" and your bot will be deployed using Docker!
 

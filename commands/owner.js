@@ -7,8 +7,8 @@ export default {
   aliases: ['creator', 'developer', 'admin'],
   async execute(msg, { sock, args, settings }) {
     const from = msg.key.remoteJid;
-    const ownerNumber = '2349122222622';
-    const ownerName = settings.botOwner || config.ownerName || 'HORLAPOOKIE';
+    const ownerNumber = config.ownerNumber.replace(/\+/g, '');
+    const ownerName = config.ownerName || 'HORLAPOOKIE';
     
     try {
       // Create vCard contact

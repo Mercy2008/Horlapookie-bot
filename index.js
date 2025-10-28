@@ -36,10 +36,10 @@ const COMMAND_PREFIX = process.env.BOT_PREFIX || config.prefix;
 
 // Make config globally accessible
 global.config = {
-  botName: process.env.BOT_NAME || 'HORLA POOKIE Bot',
+  botName: config.botName,
   prefix: COMMAND_PREFIX,
-  ownerNumber: process.env.BOT_OWNER || '234',
-  ownerName: process.env.BOT_OWNER_NAME || 'Bot Owner'
+  ownerNumber: config.ownerNumber,
+  ownerName: config.ownerName
 };
 global.COMMAND_PREFIX = COMMAND_PREFIX;
 
@@ -1070,7 +1070,7 @@ Type ${botPrefix}menu to see all commands
           // Keepalive command system - available in self mode or to owner
           if (body.startsWith(`${COMMAND_PREFIX}keepalive`) || body.startsWith(`${COMMAND_PREFIX}keepon`) || body.startsWith(`${COMMAND_PREFIX}keepoff`)) {
             // In self mode, allow anyone. In public mode, restrict to owner
-            const ownerNum = (process.env.BOT_OWNER || config.ownerNumber).replace(/\+/g, '');
+            const ownerNum = config.ownerNumber.replace(/\+/g, '');
             const isAuthorized = (botMode === 'self') || (isFromMe) || (senderNumber === ownerNum);
 
             if (isAuthorized) {
@@ -1151,7 +1151,7 @@ Type ${botPrefix}menu to see all commands
             }
 
             // Check if sender is the owner
-            const ownerNumber = (config.ownerNumber || process.env.BOT_OWNER || '234').replace(/\+/g, '');
+            const ownerNumber = config.ownerNumber.replace(/\+/g, '');
             const isOwner = isFromMe || senderNumber === ownerNumber;
 
             // Check bot mode and message origin
