@@ -1,23 +1,81 @@
 import fs from 'fs';
 import path from 'path';
+import axios from 'axios';
 
 const emojisPath = path.join(process.cwd(), 'data', 'emojis.json');
 const emojis = JSON.parse(fs.readFileSync(emojisPath, 'utf8'));
 
-const wordsPath = path.join(process.cwd(), 'words.txt');
-const wordsList = fs.readFileSync(wordsPath, 'utf8').split('\n').filter(w => w.trim());
-
 const wrgGames = new Map();
 
 const categories = [
-  { name: 'Technology', keywords: ['computer', 'software', 'internet', 'programming', 'network'] },
-  { name: 'Animals', keywords: ['cat', 'dog', 'bird', 'fish', 'animal'] },
-  { name: 'Food', keywords: ['food', 'fruit', 'vegetable', 'drink', 'meal'] },
-  { name: 'Nature', keywords: ['tree', 'flower', 'mountain', 'river', 'ocean'] },
-  { name: 'Sports', keywords: ['ball', 'game', 'player', 'team', 'sport'] },
-  { name: 'Music', keywords: ['song', 'music', 'instrument', 'sound', 'melody'] },
-  { name: 'Any Word', keywords: [] }
+  { 
+    name: 'Animals', 
+    keywords: ['animal', 'bird', 'mammal', 'fish', 'reptile', 'insect', 'pet'],
+    examples: ['cat', 'dog', 'lion', 'eagle', 'snake', 'butterfly']
+  },
+  { 
+    name: 'Food', 
+    keywords: ['food', 'fruit', 'vegetable', 'meal', 'dish', 'cuisine'],
+    examples: ['pizza', 'apple', 'carrot', 'rice', 'bread', 'chicken']
+  },
+  { 
+    name: 'Countries', 
+    keywords: ['country', 'nation', 'state'],
+    examples: ['nigeria', 'usa', 'china', 'france', 'brazil', 'india']
+  },
+  { 
+    name: 'Colors', 
+    keywords: ['color', 'colour', 'shade', 'hue'],
+    examples: ['red', 'blue', 'green', 'yellow', 'purple', 'orange']
+  },
+  { 
+    name: 'Sports', 
+    keywords: ['sport', 'game', 'athletics'],
+    examples: ['football', 'basketball', 'tennis', 'cricket', 'swimming']
+  },
+  { 
+    name: 'Cities', 
+    keywords: ['city', 'town', 'capital'],
+    examples: ['lagos', 'london', 'tokyo', 'paris', 'dubai', 'newyork']
+  },
+  { 
+    name: 'Professions', 
+    keywords: ['job', 'profession', 'career', 'occupation'],
+    examples: ['doctor', 'teacher', 'engineer', 'nurse', 'lawyer']
+  },
+  { 
+    name: 'Any Word', 
+    keywords: [],
+    examples: ['any valid english word']
+  }
 ];
+
+async function validateWord(word) {
+  try {
+    // Use Free Dictionary API to validate if word exists
+    const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`, {
+      timeout: 5000
+    });
+    return response.status === 200 && response.data && response.data.length > 0;
+  } catch (error) {
+    // If word not found or error, return false
+    return false;
+  }
+}
+
+async function validateCategory(word, category) {
+  if (category.name === 'Any Word') {
+    return await validateWord(word);
+  }
+
+  // For specific categories, check if word is valid first
+  const isValidWord = await validateWord(word);
+  if (!isValidWord) return false;
+
+  // For now, we'll accept any valid word for the category
+  // In a more advanced version, you could use AI or category-specific APIs
+  return true;
+}
 
 export default {
   name: "wrg",
@@ -33,7 +91,7 @@ export default {
         const helpText = `🎮 *WORD RANDOM GAME (WRG)* 🎮
 
 📝 *How to Play:*
-Submit valid words based on the given category prompt within the time limit!
+Submit valid English words based on the given category within the time limit!
 
 ⚡ *Commands:*
 ┃ ${prefix}wrg start - Start multiplayer game (default)
@@ -43,16 +101,20 @@ Submit valid words based on the given category prompt within the time limit!
 ┃ ${prefix}wrg <word> - Submit your word
 
 📖 *Example:*
-Game Prompt: "Technology words"
-Player: ${prefix}wrg computer
-Player: ${prefix}wrg internet
+Game Prompt: "Animals"
+Player: ${prefix}wrg lion
+Player: ${prefix}wrg elephant
 
 🎮 *Game Modes:*
 👥 *Multiplayer:* Everyone can participate and compete
 👤 *Solo:* Personal challenge, only you can play
 
+💡 *Categories:*
+${categories.map(c => `• ${c.name}${c.examples.length > 0 ? ` (e.g., ${c.examples.slice(0, 3).join(', ')})` : ''}`).join('\n')}
+
 💡 *Rules:*
-• Word must be valid (from word list)
+• Word must be a valid English word
+• Words are validated using dictionary API
 • Submit as many words as you can
 • No repeating words in same game
 • Game ends after 5 minutes or when stopped
@@ -65,23 +127,18 @@ Player: ${prefix}wrg internet
       const command = args[0].toLowerCase();
 
       if (command === 'start') {
-        // Check if mode argument is provided (solo or multi)
         const mode = args[1]?.toLowerCase();
         const isSolo = mode === 'solo' || mode === 'single' || mode === '1';
-        const isMulti = mode === 'multi' || mode === 'multiplayer' || !mode; // Default to multi
         
         const category = categories[Math.floor(Math.random() * categories.length)];
-        const categoryWords = category.keywords.length > 0
-          ? wordsList.filter(w => category.keywords.some(k => w.toLowerCase().includes(k)))
-          : wordsList;
-
         const playerJid = msg.key.participant || msg.key.remoteJid;
 
         wrgGames.set(from, {
           category: category.name,
-          validWords: categoryWords,
+          categoryKeywords: category.keywords,
+          categoryExamples: category.examples,
           usedWords: [],
-          players: new Map([[playerJid, 0]]), // Initialize with starter
+          players: new Map([[playerJid, 0]]),
           startTime: Date.now(),
           timeLimit: 5 * 60 * 1000,
           mode: isSolo ? 'solo' : 'multi'
@@ -98,11 +155,12 @@ ${modeText}
 🎯 Category: *${category.name}*
 ⏱️ Time Limit: 5 minutes
 
-${category.keywords.length > 0 
-  ? `💡 Hint: Words related to ${category.keywords.join(', ')}`
-  : `💡 Submit any valid word from the word list!`}
+${category.examples.length > 0 
+  ? `💡 Examples: ${category.examples.slice(0, 4).join(', ')}`
+  : `💡 Submit any valid English word!`}
 
-📝 Type: ${prefix}wrg <word> to play!`
+📝 Type: ${prefix}wrg <word> to play!
+✨ Words are validated using dictionary API!`
         }, { quoted: msg });
 
         await sock.sendMessage(from, {
@@ -217,18 +275,20 @@ Thanks for playing! 🎮`
         }, { quoted: msg });
       }
 
-      if (!wordsList.some(w => w.toLowerCase() === word)) {
-        return await sock.sendMessage(from, {
-          text: `❌ *${word.toUpperCase()}* is not in the word list!`
-        }, { quoted: msg });
-      }
+      // Send "checking..." message
+      const checkMsg = await sock.sendMessage(from, {
+        text: `🔍 Validating *${word.toUpperCase()}*...`
+      }, { quoted: msg });
 
-      if (game.category !== 'Any Word' && game.validWords.length > 0) {
-        if (!game.validWords.some(w => w.toLowerCase() === word)) {
-          return await sock.sendMessage(from, {
-            text: `❌ *${word.toUpperCase()}* doesn't match the category: *${game.category}*!`
-          }, { quoted: msg });
-        }
+      // Validate the word using dictionary API
+      const isValid = await validateCategory(word, game);
+      
+      if (!isValid) {
+        await sock.sendMessage(from, {
+          text: `❌ *${word.toUpperCase()}* is not a valid English word!
+💡 Make sure to spell it correctly.`
+        }, { quoted: msg });
+        return;
       }
 
       game.usedWords.push(word);

@@ -2,28 +2,10 @@ services:
   - type: web
     name: horlapookie-bot
     runtime: node
+    env: node
     region: oregon
     plan: free
-    buildCommand: |
-      apt-get update && apt-get install -y \
-        libglib2.0-0 \
-        libnss3 \
-        libatk1.0-0 \
-        libatk-bridge2.0-0 \
-        libcups2 \
-        libdrm2 \
-        libxkbcommon0 \
-        libxcomposite1 \
-        libxdamage1 \
-        libxfixes3 \
-        libxrandr2 \
-        libgbm1 \
-        libasound2 \
-        libpango-1.0-0 \
-        libcairo2 \
-        ffmpeg \
-        libvips42 && \
-      npm install
+    buildCommand: npm install
     startCommand: npm start
     envVars:
       - key: NODE_ENV
@@ -32,4 +14,8 @@ services:
         value: .
       - key: TEST_MODE_ONLY
         value: false
+      - key: LD_LIBRARY_PATH
+        value: /usr/lib/x86_64-linux-gnu
+    nativeEnvironments:
+      - nixpacks
     autoDeploy: true

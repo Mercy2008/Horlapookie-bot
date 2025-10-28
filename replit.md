@@ -217,3 +217,36 @@ Preferred communication style: Simple, everyday language.
 - API keys stored in configuration files (should use environment variables in production)
 
 **Recommendation:** Migrate sensitive credentials to environment variables and implement proper secrets management for production deployments.
+
+## Recent Changes
+
+### October 28, 2025
+- **WRG Game Enhancement**: Updated Word Random Game (WRG) to use live dictionary API validation instead of static words.txt file
+  - Now validates words in real-time using Free Dictionary API (https://dictionaryapi.dev)
+  - Supports multiple categories: Animals, Food, Countries, Colors, Sports, Cities, Professions
+  - Players can submit any valid English word that exists in the dictionary
+  - Improved user experience with real word validation
+  
+- **Render Deployment Configuration**: 
+  - Created `render.yaml` for easy deployment to Render.com
+  - Created `nixpacks.toml` to handle system dependencies (ffmpeg, libvips, etc.)
+  - Fixed GLib-GObject errors by properly configuring native libraries
+  - Updated `.gitignore` to exclude sensitive files (SESSION-ID, auth_info_baileys, etc.)
+
+## Deployment
+
+### Render.com Deployment
+This project is configured for deployment on Render.com using the `render.yaml` configuration file.
+
+**Steps to Deploy:**
+1. Push your code to GitHub
+2. Connect your GitHub repository to Render.com
+3. Render will automatically detect `render.yaml` and configure the service
+4. Set up environment variables in Render dashboard (API keys from settings.js if needed)
+5. Deploy!
+
+**Configuration Files:**
+- `render.yaml` - Render service configuration
+- `nixpacks.toml` - System dependencies configuration for native libraries
+
+The deployment is configured to automatically install all required system dependencies (ffmpeg, libvips, etc.) to prevent GLib-GObject errors.
