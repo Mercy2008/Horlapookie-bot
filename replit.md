@@ -229,9 +229,11 @@ Preferred communication style: Simple, everyday language.
   
 - **Render Deployment Configuration**: 
   - Created `render.yaml` for easy deployment to Render.com
-  - Created `nixpacks.toml` to handle system dependencies (ffmpeg, libvips, etc.)
-  - Fixed GLib-GObject errors by properly configuring native libraries
+  - Created `Dockerfile` for reliable deployment with all system dependencies
+  - Fixed GLib-GObject errors using Docker with libvips, cairo, pango, etc.
+  - Added `.dockerignore` for optimized builds
   - Updated `.gitignore` to exclude sensitive files (SESSION-ID, auth_info_baileys, etc.)
+  - Switched from nixpacks to Docker for better compatibility
 
 - **Keepalive Command Fix**: Fixed keepalive command authorization
   - Now properly uses owner number from config.js (2348028336218)
@@ -247,12 +249,21 @@ This project is configured for deployment on Render.com using the `render.yaml` 
 **Steps to Deploy:**
 1. Push your code to GitHub
 2. Connect your GitHub repository to Render.com
-3. Render will automatically detect `render.yaml` and configure the service
+3. Render will automatically detect `render.yaml` and use Docker for deployment
 4. Set up environment variables in Render dashboard (API keys from settings.js if needed)
 5. Deploy!
 
 **Configuration Files:**
-- `render.yaml` - Render service configuration
-- `nixpacks.toml` - System dependencies configuration for native libraries
+- `render.yaml` - Render service configuration (uses Docker)
+- `Dockerfile` - Container image with all system dependencies
+- `.dockerignore` - Files to exclude from Docker build
 
-The deployment is configured to automatically install all required system dependencies (ffmpeg, libvips, etc.) to prevent GLib-GObject errors.
+**What the Dockerfile Fixes:**
+The Docker container installs all required system dependencies:
+- `libvips-dev` - Image processing library (fixes GLib-GObject error)
+- `libcairo2-dev`, `libpango1.0-dev` - Text rendering
+- `libjpeg-dev`, `libpng-dev`, `libgif-dev` - Image format support
+- `ffmpeg` - Audio/video processing
+- Python3 and build tools for native modules
+
+This ensures the bot runs without GLib-GObject-CRITICAL errors.

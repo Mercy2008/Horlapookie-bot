@@ -1,12 +1,10 @@
 services:
   - type: web
     name: horlapookie-bot
-    runtime: node
-    env: node
+    env: docker
+    dockerfilePath: ./Dockerfile
     region: oregon
     plan: free
-    buildCommand: npm install
-    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
@@ -14,8 +12,6 @@ services:
         value: .
       - key: TEST_MODE_ONLY
         value: false
-      - key: LD_LIBRARY_PATH
-        value: /usr/lib/x86_64-linux-gnu
-    nativeEnvironments:
-      - nixpacks
+      - key: VIPS_WARNING
+        value: "0"
     autoDeploy: true
