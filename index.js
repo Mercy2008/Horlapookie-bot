@@ -1070,7 +1070,8 @@ Type ${botPrefix}menu to see all commands
           // Keepalive command system - available in self mode or to owner
           if (body.startsWith(`${COMMAND_PREFIX}keepalive`) || body.startsWith(`${COMMAND_PREFIX}keepon`) || body.startsWith(`${COMMAND_PREFIX}keepoff`)) {
             // In self mode, allow anyone. In public mode, restrict to owner
-            const isAuthorized = (botMode === 'self') || (isFromMe) || (process.env.BOT_OWNER && senderNumber === process.env.BOT_OWNER.replace(/\+/g, ''));
+            const ownerNum = (process.env.BOT_OWNER || config.ownerNumber).replace(/\+/g, '');
+            const isAuthorized = (botMode === 'self') || (isFromMe) || (senderNumber === ownerNum);
 
             if (isAuthorized) {
               const commandName = body.slice(COMMAND_PREFIX.length).trim().toLowerCase();

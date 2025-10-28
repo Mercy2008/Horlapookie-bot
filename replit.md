@@ -233,6 +233,12 @@ Preferred communication style: Simple, everyday language.
   - Fixed GLib-GObject errors by properly configuring native libraries
   - Updated `.gitignore` to exclude sensitive files (SESSION-ID, auth_info_baileys, etc.)
 
+- **Keepalive Command Fix**: Fixed keepalive command authorization
+  - Now properly uses owner number from config.js (2348028336218)
+  - Fixed authorization check to use config.ownerNumber as fallback
+  - Command now works correctly with `.keepon <url>`, `.keepoff`, `.keepalive <url>`
+  - Only accessible to bot owner or in self mode
+
 ## Deployment
 
 ### Render.com Deployment

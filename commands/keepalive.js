@@ -8,18 +8,17 @@ export default {
   name: 'keepon',
   description: 'Start keepalive ping system for Render deployment',
   category: 'system',
-  usage: '§keepon',
-  aliases: ['keepoff'],
+  usage: '§keepon <url>',
+  aliases: ['keepoff', 'keepalive'],
   
-  async execute(sock, chatId, userId, args, command) {
-    // Authorization is handled in index.js, so we can proceed
+  async execute(sock, chatId, userId, args, commandText) {
+    const command = commandText.toLowerCase();
 
-    if (command === 'keepon' || command.startsWith('keepalive')) {
-      // Extract URL from command if provided
-      const urlMatch = command.match(/keepalive\s+(https?:\/\/[^\s]+)/) || command.match(/keepon\s+(https?:\/\/[^\s]+)/);
-      const providedUrl = urlMatch ? urlMatch[1] : null;
+    if (command.startsWith('keepon') || command.startsWith('keepalive')) {
+      // Extract URL from args
+      const urlArg = args[0];
       
-      if (!providedUrl && !currentPingUrl) {
+      if (!urlArg && !currentPingUrl) {
         return sock.sendMessage(chatId, { 
           text: '❌ Please provide a URL to ping!\n\n📋 **Usage:**\n• `.keepon <url>` - Start keepalive with URL\n• `.keepalive <url>` - Start keepalive with URL\n• `.keepoff` - Stop keepalive\n\n**Example:** `.keepon https://myapp.onrender.com`' 
         });
@@ -32,8 +31,15 @@ export default {
       }
 
       // Set the URL to ping
-      if (providedUrl) {
-        currentPingUrl = providedUrl;
+      if (urlArg) {
+        currentPingUrl = urlArg;
+      }
+
+      // Validate URL format
+      if (!currentPingUrl.startsWith('http://') && !currentPingUrl.startsWith('https://')) {
+        return sock.sendMessage(chatId, { 
+          text: '❌ Invalid URL format! URL must start with http:// or https://' 
+        });
       }
 
       // Start the keepalive ping
@@ -56,12 +62,12 @@ export default {
       } catch (error) {
         console.log(`[KEEPALIVE] Initial ping failed: ${error.message}`);
         return sock.sendMessage(chatId, { 
-          text: `⚠️ Keepalive system started!\n🌐 Pinging: ${currentPingUrl}\n⏰ Interval: Every 7 minutes\n📡 Status: Active\n❌ Initial ping failed: ${error.message}` 
+          text: `⚠️ Keepalive system started!\n🌐 Pinging: ${currentPingUrl}\n⏰ Interval: Every 7 minutes\n📡 Status: Active\n❌ Initial ping failed: ${error.message}\n\n💡 The system will keep trying every 7 minutes.` 
         });
       }
     }
 
-    if (command === 'keepoff') {
+    if (command.startsWith('keepoff')) {
       if (!keepAliveInterval) {
         return sock.sendMessage(chatId, { text: '❌ Keepalive system is not running!' });
       }
