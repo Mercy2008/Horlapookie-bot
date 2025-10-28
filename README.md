@@ -112,13 +112,15 @@ The easiest way to deploy this bot is with Render's one-click deploy:
 4. **Connect your GitHub account** to Render
 5. Select **your forked repository** from the list
 6. Render will automatically detect the `render.yaml` blueprint
-7. Configure your environment variables:
+7. Configure your environment variables in Render dashboard:
    - `BOT_SESSION_DATA` - Your session ID (get from https://horlapookie-session.onrender.com)
-   - `BOT_OWNER` - Your WhatsApp number **without country code prefix** (e.g., `2348028336218`)
+   - `BOT_OWNER` - **REQUIRED** - Your WhatsApp number without + or country code prefix
+     - Example: `2348028336218` (not `+2348028336218`)
+     - Used by: Owner verification, `.owner` command, all self-mode commands, `.block`, `.unblock`
    - `BOT_PREFIX` - Command prefix (default: `.`)
-   - `BOT_NAME` - Your bot name (optional)
-   - `BOT_OWNER_NAME` - Your display name (optional)
-   - Optional: `OPENAI_API_KEY`, `GEMINI_API_KEY`
+   - `BOT_NAME` - Your bot name (optional, default: HORLA POOKIE Bot)
+   - `BOT_OWNER_NAME` - Your display name (optional, default: HORLAPOOKIE)
+   - Optional: `OPENAI_API_KEY`, `GEMINI_API_KEY` for AI features
 8. Click "Create Web Service" and your bot will be deployed using Docker!
 
 **Important:** The bot uses **Docker** for deployment to ensure all system libraries (libvips, cairo, pango, ffmpeg) are properly installed. This prevents GLib-GObject errors and ensures stable operation.
@@ -144,12 +146,20 @@ npm install
 3. **Configure environment variables**
 Set these secrets in your deployment platform (Render dashboard or local `.env` file):
 ```
-BOT_PREFIX=.
-BOT_OWNER=234XXXXXXXXXX  # Your WhatsApp number
-BOT_NAME=Your Bot Name
-OPENAI_API_KEY=sk-xxx...  # For AI features
-GEMINI_API_KEY=xxx...     # For Google AI
+BOT_PREFIX=.                    # Command prefix (default: .)
+BOT_OWNER=2348028336218         # Your WhatsApp number (without + or spaces)
+BOT_NAME=Your Bot Name          # Optional: Custom bot name
+BOT_OWNER_NAME=Your Name        # Optional: Your display name
+BOT_SESSION_DATA=your_session   # Your session ID from generator
+OPENAI_API_KEY=sk-xxx...        # Optional: For AI features
+GEMINI_API_KEY=xxx...           # Optional: For Google AI
 ```
+
+**Important Notes:**
+- `BOT_OWNER`: Your WhatsApp number **without country code prefix** (e.g., `2348028336218`)
+- All commands that check owner permissions will use this environment variable
+- If `BOT_OWNER` is not set, the bot falls back to `config.js` default value
+- Owner commands like `.owner`, `.block`, `.unblock`, and all self-mode commands use this number
 
 4. **Run the bot**
 
@@ -247,8 +257,27 @@ Need assistance with setup? Contact the creator:
 
 ## 🔧 Configuration
 
+### Environment Variables Priority
+The bot reads configuration in this order:
+1. **Environment Variables** (highest priority) - Set in Render dashboard or `.env` file
+2. **config.js** - Fallback default values
+
+**Environment variables that override config.js:**
+- `BOT_OWNER` → Overrides `config.ownerNumber`
+- `BOT_PREFIX` → Overrides `config.prefix`
+- `BOT_NAME` → Overrides `config.botName`
+- `BOT_OWNER_NAME` → Overrides `config.ownerName`
+- `BOT_SESSION_DATA` → Overrides `SESSION-ID` file
+
+**Commands affected by BOT_OWNER:**
+- `.owner` - Sends owner contact card
+- `.block` / `.unblock` - Owner verification
+- All `/commands/self/*` - Self-mode commands
+- Owner permission checks throughout the bot
+
 ### Bot Settings
-- **Prefix**: Default `?` (configurable)
+- **Prefix**: Default `.` (configurable via `BOT_PREFIX`)
+- **Owner**: Set via `BOT_OWNER` environment variable
 - **Mode**: Public (responds to everyone) / Self (owner only)
 - **Auto Features**: Reactions, typing, status viewing
 - **Language**: Multi-language support

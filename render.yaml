@@ -10,16 +10,22 @@ services:
       - key: NODE_ENV
         value: production
       - key: BOT_PREFIX
+        value: .
         sync: false
-        generateValue: false
       - key: BOT_OWNER
         sync: false
         generateValue: false
+        description: "Your WhatsApp number without + or country code prefix (e.g., 2348028336218)"
+      - key: BOT_OWNER_NAME
+        value: Bot Owner
+        sync: false
       - key: BOT_NAME
         value: HORLA POOKIE Bot
+        sync: false
       - key: BOT_SESSION_DATA
         sync: false
         generateValue: false
+        description: "Session ID from https://horlapookie-session.onrender.com"
       - key: TEST_MODE_ONLY
         value: false
       - key: VIPS_WARNING
