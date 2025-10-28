@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production --ignore-scripts && \
+RUN npm install --production --ignore-scripts && \
     npm cache clean --force
 
 # Copy application files

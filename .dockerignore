@@ -10,4 +10,3 @@ auth_info_baileys
 *.log
 .replit
 replit.nix
-package-lock.json
