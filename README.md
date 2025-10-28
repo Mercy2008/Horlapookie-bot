@@ -99,12 +99,25 @@ When the bot starts successfully, you'll see this welcome message:
 
 ## 🚀 Quick Start
 
+### One-Click Deploy to Render
+
+The easiest way to deploy this bot is with Render's one-click deploy:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+**How it works:**
+1. Click the "Deploy to Render" button above
+2. Sign in to Render (or create a free account)
+3. Render will automatically detect your forked repository
+4. Configure your environment variables (SESSION-ID, BOT_PREFIX, etc.)
+5. Click "Create Web Service" and your bot will be deployed!
+
 ### Prerequisites
 - Node.js 18+ installed
 - WhatsApp account
 - API keys for enhanced features (optional)
 
-### Installation
+### Manual Installation
 
 1. **Clone the repository**
 ```bash
@@ -118,9 +131,9 @@ npm install
 ```
 
 3. **Configure environment variables**
-Set these secrets in your deployment platform:
+Set these secrets in your deployment platform (Render dashboard or local `.env` file):
 ```
-BOT_PREFIX=?
+BOT_PREFIX=.
 BOT_OWNER=234XXXXXXXXXX  # Your WhatsApp number
 BOT_NAME=Your Bot Name
 OPENAI_API_KEY=sk-xxx...  # For AI features
@@ -128,6 +141,13 @@ GEMINI_API_KEY=xxx...     # For Google AI
 ```
 
 4. **Run the bot**
+
+**For Render Deployment (Recommended):**
+- Environment variables are set in Render dashboard
+- Bot starts automatically after deployment
+- Uses Docker for reliable operation
+
+**For Local Development:**
 ```bash
 npm start
 ```
@@ -162,6 +182,15 @@ Need assistance with setup? Contact the creator:
 - **Terminal Input:** Quick setup without file editing
 - **Creator Contact:** Best for first-time users or troubleshooting
 - **Note:** Bot does not support pairing codes - use session ID only
+
+### ☁️ Why Deploy to Render?
+- **✅ Free Tier Available:** Get started with Render's free plan
+- **🔧 Auto-Detection:** Automatically detects your repository and configuration
+- **🐳 Docker Support:** Uses our optimized Dockerfile for reliability
+- **📊 Built-in Monitoring:** Track your bot's performance and uptime
+- **🔄 Auto-Deploy:** Automatically redeploys when you push to GitHub
+- **🌐 Custom Domains:** Connect your own domain (optional)
+- **⚡ Fast Deployment:** Bot online in minutes, not hours
 
 ## 📋 Command Categories
 
