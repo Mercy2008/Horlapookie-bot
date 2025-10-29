@@ -237,6 +237,11 @@ Preferred communication style: Simple, everyday language.
   - Uses API-based messages with fallback to default quotes
   - Scheduler prevents duplicate intervals on reconnects
   
+- **Update Command Fix**: Fixed bot update mechanism
+  - Added git to Dockerfile system dependencies
+  - Resolves "git: not found" error when using `.update` command
+  - Bot can now pull latest changes from GitHub repository
+  
 - **Menu Updates**: 
   - Removed Shazam command aliases (whatsong, findsong, identify) to reduce menu clutter
   - Added anticall and antidelete to ANTI-COMMANDS category
@@ -282,12 +287,13 @@ This project is configured for deployment on Render.com using the `render.yaml` 
 - `Dockerfile` - Container image with all system dependencies
 - `.dockerignore` - Files to exclude from Docker build
 
-**What the Dockerfile Fixes:**
+**What the Dockerfile Includes:**
 The Docker container installs all required system dependencies:
+- `git` - Version control for bot update command
 - `libvips-dev` - Image processing library (fixes GLib-GObject error)
 - `libcairo2-dev`, `libpango1.0-dev` - Text rendering
 - `libjpeg-dev`, `libpng-dev`, `libgif-dev` - Image format support
 - `ffmpeg` - Audio/video processing
 - Python3 and build tools for native modules
 
-This ensures the bot runs without GLib-GObject-CRITICAL errors.
+This ensures the bot runs without GLib-GObject-CRITICAL errors and can update itself from GitHub.

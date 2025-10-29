@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Install system dependencies for native modules (fixes GLib-GObject error)
 RUN apt-get update && apt-get install -y \
+    git \
     libvips-dev \
     libvips42 \
     libcairo2-dev \
