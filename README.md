@@ -44,7 +44,7 @@ When the bot starts, you'll see this animated terminal-style display:
 ```
 
 **Bot Name:** 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻  
-**Creator:** Eclipse MD Team
+**Creator:** Horlapookie 
 
 ## 📱 Connection Message
 When the bot starts successfully, you'll see this welcome message:
