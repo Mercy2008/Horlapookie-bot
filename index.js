@@ -15,6 +15,8 @@ import { loadSettings, saveSettings, updateSetting, getCurrentSettings } from '.
 import { handleLinkDetection } from './eclipse-plug/antilink.js';
 import isAdmin from './lib/isAdmin.js';
 import { buttonResponses } from './lib/menuButtons.js';
+import { storeMessage, handleMessageRevocation } from './eclipse-plug/self/antidelete.js';
+import { readState as readAnticallState } from './eclipse-plug/self/anticall.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -720,6 +722,37 @@ Type ${botPrefix}menu to see all commands
       }
     });
 
+    // Handle incoming calls (anticall feature)
+    sock.ev.on('call', async (callData) => {
+      try {
+        const anticallState = readAnticallState();
+        if (!anticallState.enabled) return;
+
+        for (const call of callData) {
+          if (call.status === 'offer') {
+            console.log(color('[ANTICALL] Incoming call detected, rejecting and blocking...', 'yellow'));
+            
+            try {
+              await sock.rejectCall(call.id, call.from);
+              console.log(color('[ANTICALL] Call rejected', 'green'));
+              
+              await sock.updateBlockStatus(call.from, 'block');
+              console.log(color(`[ANTICALL] Blocked caller: ${call.from}`, 'green'));
+              
+              const ownerNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+              await sock.sendMessage(ownerNumber, {
+                text: `📵 *ANTICALL ALERT*\n\n🚫 Rejected and blocked incoming call from:\n📱 *${call.from}*\n\n⏰ Time: ${new Date().toLocaleString('en-US', { timeZone: 'Africa/Lagos' })}`
+              });
+            } catch (err) {
+              console.log(color(`[ANTICALL] Error handling call: ${err.message}`, 'red'));
+            }
+          }
+        }
+      } catch (err) {
+        console.log(color(`[ANTICALL] Call event error: ${err.message}`, 'red'));
+      }
+    });
+
     // Handle status updates for automation
     sock.ev.on('messages.upsert', async ({ messages, type }) => {
       // Handle status messages
@@ -928,10 +961,19 @@ Type ${botPrefix}menu to see all commands
           if (!senderJid) return;
           const senderNumber = await normalizeJid(sock, senderJid, (isGroup || isNewsletter) ? remoteJid : null);
 
+          // Store message for antidelete tracking
+          if (msg.key.fromMe) {
+            await storeMessage(sock, msg);
+          }
+
           let body = '';
           const messageType = Object.keys(msg.message)[0];
           if (messageType === 'protocolMessage') {
-            return; // Silently skip protocol messages
+            // Check if it's a message deletion (revoke)
+            if (msg.message.protocolMessage?.type === 0) {
+              await handleMessageRevocation(sock, msg);
+            }
+            return; // Skip protocol messages after handling
           }
           switch (messageType) {
             case 'conversation':

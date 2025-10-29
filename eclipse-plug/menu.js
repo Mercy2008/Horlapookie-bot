@@ -26,7 +26,7 @@ const platformName = {
 }[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
 
 // Get total command count dynamically
-const totalCommands = (global.commands?.size || 339) + (global.selfCommands?.size || 21);
+const totalCommands = (global.commands?.size || 336) + (global.selfCommands?.size || 22);
 
 // Get current time and date
 const now = new Date();
@@ -234,9 +234,6 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 
 ╭━━━✦❮ 🆕 NEWLY ADDED ❯✦━⊷
 ┃✪  ${prefix}shazam - identify songs from audio/video
-┃✪  ${prefix}whatsong - alias for shazam
-┃✪  ${prefix}findsong - alias for shazam
-┃✪  ${prefix}identify - alias for shazam
 ┃✪  ${prefix}play2 - alternative YouTube music player
 ┃✪  ${prefix}music2 - alias for play2
 ┃✪  ${prefix}song2 - alias for play2
@@ -399,6 +396,10 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ╰━━━━━━━━━━━━━━━━━⊷
 
 ╭━━━✦❮ 🛡️ ANTI-COMMANDS ❯✦━⊷
+┃✪  ${prefix}anticall (self) - auto-reject and block calls
+┃✪  ${prefix}antidelete (self) - track deleted messages
+┃✪  ${prefix}antilink - prevent links in groups
+┃✪  ${prefix}antibug - anti-spam protection
 ╰━━━━━━━━━━━━━━━━━⊷
 
 ╭━━━✦❮ 📁 FILE MANAGEMENT ❯✦━⊷
