@@ -26,7 +26,7 @@ const platformName = {
 }[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
 
 // Get total command count dynamically
-const totalCommands = (global.commands?.size || 336) + (global.selfCommands?.size || 22);
+const totalCommands = (global.commands?.size || 338) + (global.selfCommands?.size || 23);
 
 // Get current time and date
 const now = new Date();
@@ -151,6 +151,8 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}answer - answer trivia questions
 ┃✪  ${prefix}brutal - display brutal text art
 ┃✪  ${prefix}character - character command
+┃✪  ${prefix}goodmorning - send good morning message
+┃✪  ${prefix}goodnight - send goodnight message
 ┃✪  ${prefix}hangman - word guessing game
 ┃✪  ${prefix}joke - random jokes
 ┃✪  ${prefix}myscore - check your scores
@@ -392,6 +394,7 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}autorecording (self) - autorecording (self) command
 ┃✪  ${prefix}autotyping (self) - autotyping (self) command
 ┃✪  ${prefix}autoviewstatus (self) - autoviewstatus (self) command
+┃✪  ${prefix}autogreet (self) - auto morning/night greetings
 ┃✪  ${prefix}antidelete (self) - antidelete tracker
 ╰━━━━━━━━━━━━━━━━━⊷
 

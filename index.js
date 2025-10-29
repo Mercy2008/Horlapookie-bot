@@ -17,6 +17,7 @@ import isAdmin from './lib/isAdmin.js';
 import { buttonResponses } from './lib/menuButtons.js';
 import { storeMessage, handleMessageRevocation } from './eclipse-plug/self/antidelete.js';
 import { readState as readAnticallState } from './eclipse-plug/self/anticall.js';
+import { checkAutoGreetings } from './eclipse-plug/self/autogreet.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -96,6 +97,9 @@ function loadAntibugSettings() {
 let moderators = fs.existsSync(MODS_FILE)
   ? JSON.parse(fs.readFileSync(MODS_FILE))
   : [];
+
+// Auto-greet scheduler reference
+let autoGreetInterval = null;
 
 function saveModerators() {
   fs.writeFileSync(MODS_FILE, JSON.stringify(moderators, null, 2));
@@ -719,6 +723,22 @@ Type ${botPrefix}menu to see all commands
         } catch (error) {
           console.log(color('[WARN] Failed to send connection message:', 'yellow'), error.message);
         }
+
+        // Clear previous auto-greet interval if exists (prevent duplicates on reconnect)
+        if (autoGreetInterval) {
+          clearInterval(autoGreetInterval);
+          console.log(color('[AUTOGREET] Cleared previous scheduler', 'yellow'));
+        }
+
+        // Start auto-greet checker (checks every minute)
+        autoGreetInterval = setInterval(async () => {
+          try {
+            await checkAutoGreetings(sock);
+          } catch (err) {
+            console.log(color('[AUTOGREET] Check failed:', 'yellow'), err.message);
+          }
+        }, 60000); // Check every 60 seconds
+        console.log(color('[AUTOGREET] Auto-greeting scheduler started', 'green'));
       }
     });
 
