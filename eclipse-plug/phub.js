@@ -26,16 +26,20 @@ const phub = horla({
     const text1 = textParts[0]?.trim() || 'Porn';
     const text2 = textParts[1]?.trim() || 'Hub';
     
-    // Use a different API that works better
-    const apiUrl = `https://api.popcat.xyz/pornhub?text=${encodeURIComponent(text1)}&text2=${encodeURIComponent(text2)}`;
+    // Use TextPro API as fallback
+    const apiUrl = `https://api.neastooid.xyz/api/maker/pornhub?text1=${encodeURIComponent(text1)}&text2=${encodeURIComponent(text2)}`;
     
     const response = await axios.get(apiUrl, {
-      responseType: 'arraybuffer',
       timeout: 15000
     });
 
+    // Check if response has image URL
+    if (!response.data || !response.data.result) {
+      throw new Error('API returned invalid response. Please try again later.');
+    }
+
     await sock.sendMessage(from, {
-      image: Buffer.from(response.data),
+      image: { url: response.data.result },
       caption: "*Logo by HORLA POOKIE*"
     }, { quoted: msg });
   } catch (e) {
