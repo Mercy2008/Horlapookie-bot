@@ -12,6 +12,11 @@ export default {
   aliases: ['keepoff', 'keepalive'],
   
   async execute(sock, chatId, userId, args, commandText) {
+    if (!commandText) {
+      return sock.sendMessage(chatId, { 
+        text: '❌ Invalid command format!\n\n📋 **Usage:**\n• `.keepon <url>` - Start keepalive with URL\n• `.keepalive <url>` - Start keepalive with URL\n• `.keepoff` - Stop keepalive' 
+      });
+    }
     const command = commandText.toLowerCase();
 
     if (command.startsWith('keepon') || command.startsWith('keepalive')) {

@@ -1,4 +1,4 @@
-// commands/forex/forex.js
+// eclipse-plug/forex/forex.js
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';

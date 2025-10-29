@@ -1,7 +1,7 @@
 {
-  "name": "whatsapp-bot",
+  "name": "eclipse-md",
   "version": "1.0.0",
-  "description": "Simple WhatsApp Bot created by horlapookie using Baileys",
+  "description": "𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 v1 - Advanced WhatsApp Bot with 300+ Commands",
   "main": "index.js",
   "type": "module",
   "scripts": {

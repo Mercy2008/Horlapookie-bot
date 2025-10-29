@@ -32,10 +32,10 @@ export default horla({
       contextInfo: {
         ...channelInfo.contextInfo,
         externalAdReply: {
-          title: "HORLA POOKIE IS ALIVE ✅",
+          title: "𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 IS ALIVE ✅",
           body: "Stay connected with the bot",
           thumbnailUrl: THUMBNAIL_URL,
-          sourceUrl: config.github || "https://github.com/horlapookie",
+          sourceUrl: config.github || "https://github.com/horlapookie/Eclipse-MD",
           mediaType: 1
         }
       }

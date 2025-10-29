@@ -1,22 +1,22 @@
-# 🤖 HORLA POOKIE WhatsApp Bot
+# 🤖 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 WhatsApp Bot
 
 <div align="center">
 
-![Bot Logo](https://files.catbox.moe/i4bbnf.png)
+![Bot Logo](https://files.catbox.moe/2hznmg.jpg)
 
 <!-- Animated Typing Effect -->
-![Typing SVG](https://readme-typing-svg.demolab.com/?lines=HORLAPOOKIE+Bot+Created+with+Love+by+Horlapookie&font=Fira+Code&color=00C853&size=28&center=true&vCenter=true&width=800&height=50&duration=3000&pause=1000)
+![Typing SVG](https://readme-typing-svg.demolab.com/?lines=𝔼𝕔𝕝𝕚𝕡𝕤𝕖+𝕄𝔻+Bot+v1&font=Fira+Code&color=00C853&size=28&center=true&vCenter=true&width=800&height=50&duration=3000&pause=1000)
 
 <!-- Backup static version if SVG doesn't load -->
 <noscript>
-**🚀 HORLAPOOKIE Bot Created with Love by Horlapookie**
+**🚀 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 Bot v1**
 </noscript>
 
 *Advanced WhatsApp Bot with 300+ Commands*
 
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)](https://github.com/horlapookie/whatsapp-bot)
-[![Version](https://img.shields.io/badge/Version-3.0-blue.svg)](https://github.com/horlapookie/whatsapp-bot)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/horlapookie/whatsapp-bot)
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)](https://github.com/horlapookie/Eclipse-MD)
+[![Version](https://img.shields.io/badge/Version-v1-blue.svg)](https://github.com/horlapookie/Eclipse-MD)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/horlapookie/Eclipse-MD)
 
 </div>
 
@@ -26,25 +26,25 @@ When the bot starts, you'll see this animated terminal-style display:
 
 ```
 ╔═══════════════════════════════════════════╗
-║  ██╗  ██╗ ██████╗ ██████╗ ██╗     █████╗  ║
-║  ██║  ██║██╔═══██╗██╔══██╗██║    ██╔══██╗ ║
-║  ███████║██║   ██║██████╔╝██║    ███████║ ║
-║  ██╔══██║██║   ██║██╔══██╗██║    ██╔══██║ ║
-║  ██║  ██║╚██████╔╝██║  ██║███████╗██║  ██║ ║
-║  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ║
-║  ██████╗  ██████╗  ██████╗ ██╗  ██╗██╗███╗ ║
-║  ██╔══██╗██╔═══██╗██╔═══██╗██║ ██╔╝██║██╔╝ ║
-║  ██████╔╝██║   ██║██║   ██║█████╔╝ ██║██║  ║
-║  ██╔═══╝ ██║   ██║██║   ██║██╔═██╗ ██║██║  ║
-║  ██║     ╚██████╔╝╚██████╔╝██║  ██╗██║███║ ║
-║  ╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝╚══╝ ║
-║           🌟 Horlapookie Bot v2.0 🌟          ║
+║   ███████╗ ██████╗██╗     ██╗██████╗ ███╗ ║
+║   ██╔════╝██╔════╝██║     ██║██╔══██╗██╔╝ ║
+║   █████╗  ██║     ██║     ██║██████╔╝██║  ║
+║   ██╔══╝  ██║     ██║     ██║██╔═══╝ ██║  ║
+║   ███████╗╚██████╗███████╗██║██║     ███║ ║
+║   ╚══════╝ ╚═════╝╚══════╝╚═╝╚═╝     ╚══╝ ║
+║    ███╗   ███╗██████╗                      ║
+║    ████╗ ████║██╔══██╗                     ║
+║    ██╔████╔██║██║  ██║                     ║
+║    ██║╚██╔╝██║██║  ██║                     ║
+║    ██║ ╚═╝ ██║██████╔╝                     ║
+║    ╚═╝     ╚═╝╚═════╝                      ║
+║           🌟 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 v1 🌟            ║
 ╚═══════════════════════════════════════════╝
-🚀 Starting HORLAPOOKIE Bot...
+🚀 Starting 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 Bot...
 ```
 
-**Bot Name:** ✦✦✦ 𝐇 𝐎 𝐑 𝐋 𝐀 𝐏 𝐎 𝐎 𝐊 𝐈 𝐄 ✦✦✦  
-**Creator:** 𝓗𝓞𝓡𝓛𝓐𝓟𝓞𝓞𝓚𝓘𝓔
+**Bot Name:** 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻  
+**Creator:** Eclipse MD Team
 
 ## 📱 Connection Message
 When the bot starts successfully, you'll see this welcome message:
@@ -118,8 +118,8 @@ The easiest way to deploy this bot is with Render's one-click deploy:
      - Example: `2348028336218` (not `+2348028336218`)
      - Used by: Owner verification, `.owner` command, all self-mode commands, `.block`, `.unblock`
    - `BOT_PREFIX` - Command prefix (default: `.`)
-   - `BOT_NAME` - Your bot name (optional, default: HORLA POOKIE Bot)
-   - `BOT_OWNER_NAME` - Your display name (optional, default: HORLAPOOKIE)
+   - `BOT_NAME` - Your bot name (optional, default: 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻)
+   - `BOT_OWNER_NAME` - Your display name (optional, default: Eclipse)
    - Optional: `OPENAI_API_KEY`, `GEMINI_API_KEY` for AI features
 8. Click "Create Web Service" and your bot will be deployed using Docker!
 
@@ -134,8 +134,8 @@ The easiest way to deploy this bot is with Render's one-click deploy:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/horlapookie/Horlapookie-bot.git
-cd Horlapookie-bot
+git clone https://github.com/horlapookie/Eclipse-MD.git
+cd Eclipse-MD
 ```
 
 2. **Install dependencies**
@@ -179,7 +179,7 @@ The bot supports **TWO connection methods**:
 
 #### Method 1: Session ID Generator (Recommended) 🌟
 Get your session ID from the official website:
-- 🌐 **Website:** https://horlapookie-session.onrender.com
+- 🌐 **Website:** https://eclipse-md-session.onrender.com
 - 📋 Copy your session ID and paste it in your `SESSION-ID` file
 - ⚡ Fast startup, no scanning required
 - 🔐 Session persists across restarts
@@ -337,9 +337,9 @@ The bot reads configuration in this order:
 
 ## 👨‍💻 Developer
 <!-- Animated Typing Effect -->
-![Typing SVG](https://readme-typing-svg.demolab.com/?lines=DEVELOPED+BY+HORLAPOOKIE&font=Fira+Code&color=00C853&size=28&center=true&vCenter=true&width=800&height=50&duration=3000&pause=1000)
+![Typing SVG](https://readme-typing-svg.demolab.com/?lines=𝔼𝕔𝕝𝕚𝕡𝕤𝕖+𝕄𝔻+v1&font=Fira+Code&color=00C853&size=28&center=true&vCenter=true&width=800&height=50&duration=3000&pause=1000)
 
-**Created by**: Horlapookie  
+**Created by**: Eclipse MD Team  
 **GitHub**: [@horlapookie](https://github.com/horlapookie)  
 **WhatsApp**: +234 912 222 2622  
 **Email**: horlapookie@gmail.com  
@@ -367,7 +367,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Made with ❤️ by Horlapookie**
+**Made with ❤️ by Eclipse MD Team**
 
 *For any questions or support, feel free to reach out!*
 

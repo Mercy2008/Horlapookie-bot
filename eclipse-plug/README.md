@@ -1,15 +1,15 @@
-# 🎮 HORLA POOKIE Bot Commands Directory
+# 🎮 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 Bot Eclipse-Plug Directory
 
 <div align="center">
 
 <!-- Animated Typing Effect -->
-![Typing SVG](https://readme-typing-svg.demolab.com/?lines=300%2B+POWERFUL+COMMANDS+AVAILABLE;AI+MEDIA+GAMES+AND+MORE;BUILT+WITH+LOVE+BY+HORLAPOOKIE&font=Fira+Code&color=00C853&size=24&center=true&vCenter=true&width=900&height=50&duration=4000&pause=1000)
+![Typing SVG](https://readme-typing-svg.demolab.com/?lines=300%2B+POWERFUL+COMMANDS+AVAILABLE;AI+MEDIA+GAMES+AND+MORE;𝔼𝕔𝕝𝕚𝕡𝕤𝕖+𝕄𝔻+v1&font=Fira+Code&color=00C853&size=24&center=true&vCenter=true&width=900&height=50&duration=4000&pause=1000)
 
 </div>
 
 ## 📂 Command Structure
 
-This directory contains **300+ modular commands** for the HORLA POOKIE WhatsApp Bot. Each command is a self-contained JavaScript module with its own functionality.
+This directory contains **300+ modular commands** for the 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 WhatsApp Bot. Each command is a self-contained JavaScript module with its own functionality.
 
 ```
 ┌─────────────────────────────────────────┐

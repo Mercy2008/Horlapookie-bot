@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url';
 import axios from 'axios'; // Import axios for dictionary command
 import archiver from 'archiver';
 import { loadSettings, saveSettings, updateSetting, getCurrentSettings } from './lib/persistentData.js';
-import { handleLinkDetection } from './commands/antilink.js';
+import { handleLinkDetection } from './eclipse-plug/antilink.js';
 import isAdmin from './lib/isAdmin.js';
 import { buttonResponses } from './lib/menuButtons.js';
 
@@ -259,7 +259,7 @@ const selfCommands = new Map();
 // Import chatbot handler
 let chatbotHandler = null;
 try {
-  const chatbotModule = await import('./commands/chatbot.js');
+  const chatbotModule = await import('./eclipse-plug/chatbot.js');
   chatbotHandler = chatbotModule.handleChatbotResponse;
   console.log(color('[INFO] Chatbot handler loaded successfully', 'green'));
 } catch (err) {
@@ -267,7 +267,7 @@ try {
 }
 
 // Load public commands
-const commandsDir = path.join(__dirname, 'commands');
+const commandsDir = path.join(__dirname, 'eclipse-plug');
 const commandFiles = fs
   .readdirSync(commandsDir)
   .filter((f) => f.endsWith('.js') || f.endsWith('.cjs'));
@@ -382,7 +382,7 @@ for (const file of commandFiles) {
 }
 
 // Load self commands
-const selfCommandsDir = path.join(__dirname, 'commands', 'self');
+const selfCommandsDir = path.join(__dirname, 'eclipse-plug', 'self');
 if (fs.existsSync(selfCommandsDir)) {
   const selfCommandFiles = fs
     .readdirSync(selfCommandsDir)
@@ -1077,7 +1077,7 @@ Type ${botPrefix}menu to see all commands
               const commandName = body.slice(COMMAND_PREFIX.length).trim().toLowerCase();
               if (commandName === 'keepon' || commandName === 'keepoff' || commandName.startsWith('keepalive')) {
                 try {
-                  const keepaliveModule = await import('./commands/keepalive.js');
+                  const keepaliveModule = await import('./eclipse-plug/keepalive.js');
                   // Parse the full command with URL arguments
                   const fullArgs = body.slice(COMMAND_PREFIX.length).trim().split(/\s+/);
                   await keepaliveModule.default.execute(sock, remoteJid, senderNumber, fullArgs.slice(1), body.slice(COMMAND_PREFIX.length).trim());

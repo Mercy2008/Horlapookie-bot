@@ -1,4 +1,4 @@
-# 🔐 HORLA POOKIE Bot - Owner Commands
+# 🔐 𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻 Bot - Owner Commands
 
 <div align="center">
 

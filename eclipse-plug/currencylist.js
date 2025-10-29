@@ -1,4 +1,4 @@
-// commands/forex/currencylist.js
+// eclipse-plug/forex/currencylist.js
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';

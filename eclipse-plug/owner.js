@@ -8,7 +8,7 @@ export default {
   async execute(msg, { sock, args, settings }) {
     const from = msg.key.remoteJid;
     const ownerNumber = config.ownerNumber.replace(/\+/g, '');
-    const ownerName = config.ownerName || 'HORLAPOOKIE';
+    const ownerName = config.ownerName || 'Eclipse';
     
     try {
       // Create vCard contact
