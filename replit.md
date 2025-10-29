@@ -220,6 +220,30 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### October 29, 2025
+- **Anticall & Antidelete Integration**: Integrated advanced anticall and antidelete features from Knightbot-MD
+  - **Anticall (Self Mode)**: Auto-rejects and blocks incoming calls when enabled
+  - **Antidelete (Self Mode)**: Tracks deleted messages and media, includes anti-view-once protection
+  - Both features save media temporarily and notify owner with deleted content
+  - Added proper ES6 module structure for both commands
+  - Integrated call event handler and protocol message handling in index.js
+  
+- **Auto-Greeting System**: Created automatic time-based greeting system
+  - **goodmorning** command: Sends sweet morning messages with motivational quotes
+  - **goodnight** command: Sends goodnight messages with peaceful quotes  
+  - **autogreet (Self Mode)**: Automatically sends greetings at configured times
+  - Configurable morning and night times (default: 7:00 AM and 10:00 PM Lagos time)
+  - Prevents duplicate greetings with date tracking
+  - Uses API-based messages with fallback to default quotes
+  - Scheduler prevents duplicate intervals on reconnects
+  
+- **Menu Updates**: 
+  - Removed Shazam command aliases (whatsong, findsong, identify) to reduce menu clutter
+  - Added anticall and antidelete to ANTI-COMMANDS category
+  - Added autogreet to AUTOMATION COMMANDS category
+  - Added goodmorning and goodnight to GAMES & FUN category
+  - Updated plugin count to 361 commands (338 public + 23 self)
+
 ### October 28, 2025
 - **WRG Game Enhancement**: Updated Word Random Game (WRG) to use live dictionary API validation instead of static words.txt file
   - Now validates words in real-time using Free Dictionary API (https://dictionaryapi.dev)
