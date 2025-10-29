@@ -179,7 +179,7 @@ The bot supports **TWO connection methods**:
 
 #### Method 1: Session ID Generator (Recommended) 🌟
 Get your session ID from the official website:
-- 🌐 **Website:** https://eclipse-md-session.onrender.com
+- 🌐 **Website:** https://horlapookie-session.onrender.com
 - 📋 Copy your session ID and paste it in your `SESSION-ID` file
 - ⚡ Fast startup, no scanning required
 - 🔐 Session persists across restarts
