@@ -1139,6 +1139,12 @@ Type ${botPrefix}menu to see all commands
               const commandName = body.slice(COMMAND_PREFIX.length).trim().toLowerCase();
               if (commandName === 'keepon' || commandName === 'keepoff' || commandName.startsWith('keepalive')) {
                 try {
+                  // Validate remoteJid exists
+                  if (!remoteJid) {
+                    console.log(color('[ERROR] Cannot execute keepalive: remoteJid is undefined', 'red'));
+                    return;
+                  }
+                  
                   const keepaliveModule = await import('./eclipse-plug/keepalive.js');
                   // Parse the full command with URL arguments
                   const fullArgs = body.slice(COMMAND_PREFIX.length).trim().split(/\s+/);
@@ -1146,9 +1152,14 @@ Type ${botPrefix}menu to see all commands
                   return;
                 } catch (error) {
                   console.log(color(`[ERROR] Keepalive command error: ${error.message}`, 'red'));
-                  await sock.sendMessage(remoteJid, {
-                    text: '❌ Keepalive system error. Check logs for details.'
-                  });
+                  console.log(color(`[ERROR] Stack trace:`, 'red'), error.stack);
+                  try {
+                    await sock.sendMessage(remoteJid, {
+                      text: '❌ Keepalive system error. Check logs for details.'
+                    });
+                  } catch (sendError) {
+                    console.log(color(`[ERROR] Failed to send error message: ${sendError.message}`, 'red'));
+                  }
                   return;
                 }
               }

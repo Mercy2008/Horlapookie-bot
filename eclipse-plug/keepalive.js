@@ -10,29 +10,29 @@ export default {
   category: 'system',
   usage: '§keepon <url>',
   aliases: ['keepoff', 'keepalive'],
-  
+
   async execute(msg, { sock, args, isOwner, settings }) {
     const from = msg.key.remoteJid;
-    
+
     // Owner check
     if (!msg.key.fromMe && !isOwner) {
       return await sock.sendMessage(from, {
         text: '❌ This command is only available to the bot owner.'
       }, { quoted: msg });
     }
-    
+
     const commandName = msg.body?.split(' ')[0].replace(settings.prefix, '').toLowerCase() || '';
-    
+
     if (commandName === 'keepon' || commandName === 'keepalive') {
       // Extract URL from args
       const urlArg = args[0];
-      
+
       if (!urlArg && !currentPingUrl) {
         return await sock.sendMessage(from, { 
           text: '❌ Please provide a URL to ping!\n\n📋 **Usage:**\n• `.keepon <url>` - Start keepalive with URL\n• `.keepalive <url>` - Start keepalive with URL\n• `.keepoff` - Stop keepalive\n\n**Example:** `.keepon https://myapp.onrender.com`' 
         }, { quoted: msg });
       }
-      
+
       if (keepAliveInterval) {
         return await sock.sendMessage(from, { 
           text: `✅ Keepalive system is already running!\n🌐 Currently pinging: ${currentPingUrl}\n\nUse \`.keepoff\` to stop, then start with new URL.` 

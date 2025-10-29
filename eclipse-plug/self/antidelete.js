@@ -279,7 +279,8 @@ export async function storeMessage(sock, message) {
 
         if (isViewOnce && mediaType && fs.existsSync(mediaPath)) {
             try {
-                const ownerNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+                // Use config owner number instead of sock.user.id
+                const ownerNumber = config.ownerNumber + '@s.whatsapp.net';
                 const senderName = sender.split('@')[0];
                 const mediaOptions = {
                     caption: `🔓 *Anti-ViewOnce ${mediaType}*\n👤 From: @${senderName}`,
