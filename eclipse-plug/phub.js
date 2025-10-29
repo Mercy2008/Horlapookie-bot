@@ -1,6 +1,9 @@
 
+
 import { horla } from '../lib/horla.js';
-import fetch from 'node-fetch';
+import puppeteer from 'puppeteer';
+import path from 'path';
+import fs from 'fs';
 
 const phub = horla({
   nomCom: "phub",
@@ -17,56 +20,92 @@ const phub = horla({
     return;
   }
 
+  let browser = null;
   try {
     await sock.sendMessage(from, {
-      text: "*Processing...*"
+      text: "*Generating logo...*"
     }, { quoted: msg });
 
     const text = Array.isArray(args) ? args.join(' ') : args.toString();
     const textParts = text.split('|');
-    const text1 = textParts[0]?.trim() || 'Porn';
-    const text2 = textParts[1]?.trim() || 'Hub';
+    const text1 = encodeURIComponent(textParts[0]?.trim() || 'Porn');
+    const text2 = encodeURIComponent(textParts[1]?.trim() || 'Hub');
     
-    // Try primary API (textpro.me via direct fetch)
+    // Launch puppeteer browser
+    browser = await puppeteer.launch({
+      headless: 'new',
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu'
+      ]
+    });
+
+    const page = await browser.newPage();
+    
+    // Navigate to textpro.me pornhub generator
+    const url = `https://textpro.me/pornhub-style-logo-online-generator-free-977.html`;
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+    
+    // Fill in the form
+    await page.type('#text-0', textParts[0]?.trim() || 'Porn');
+    await page.type('#text-1', textParts[1]?.trim() || 'Hub');
+    
+    // Click generate button
+    await page.click('#submit');
+    
+    // Wait for result image
+    await page.waitForSelector('#result-container img', { timeout: 30000 });
+    
+    // Get image source
+    const imgSrc = await page.evaluate(() => {
+      const img = document.querySelector('#result-container img');
+      return img ? img.src : null;
+    });
+    
+    if (!imgSrc) {
+      throw new Error('Could not generate logo image');
+    }
+    
+    // Download the image
+    const viewSource = await page.goto(imgSrc);
+    const imageBuffer = await viewSource.buffer();
+    
+    await sock.sendMessage(from, {
+      image: imageBuffer,
+      caption: "*Logo by ECLIPSE MD*"
+    }, { quoted: msg });
+
+  } catch (e) {
+    console.error('[PHUB] Error:', e);
+    
+    // Fallback to API approach
     try {
-      const apiUrl = `https://api.popcat.xyz/pornhub?text=${encodeURIComponent(text1)}&text2=${encodeURIComponent(text2)}`;
+      const fetch = (await import('node-fetch')).default;
+      const apiUrl = `https://textpro.me/api/pornhub?text1=${text1}&text2=${text2}`;
       const response = await fetch(apiUrl, { timeout: 15000 });
       
       if (response.ok) {
         const imageBuffer = await response.buffer();
-        
         await sock.sendMessage(from, {
           image: imageBuffer,
           caption: "*Logo by ECLIPSE MD*"
         }, { quoted: msg });
         return;
       }
-    } catch (apiError) {
-      console.log('[PHUB] Primary API failed, trying fallback...');
+    } catch (fallbackError) {
+      console.log('[PHUB] Fallback also failed:', fallbackError.message);
     }
-
-    // Fallback: Use alternative API
-    const fallbackUrl = `https://api.erdwpe.com/api/maker/pornhub?text1=${encodeURIComponent(text1)}&text2=${encodeURIComponent(text2)}`;
-    const fallbackResponse = await fetch(fallbackUrl, { timeout: 15000 });
     
-    if (fallbackResponse.ok) {
-      const data = await fallbackResponse.json();
-      if (data.result) {
-        await sock.sendMessage(from, {
-          image: { url: data.result },
-          caption: "*Logo by ECLIPSE MD*"
-        }, { quoted: msg });
-        return;
-      }
-    }
-
-    throw new Error('All logo generation services are currently unavailable');
-
-  } catch (e) {
-    console.error('[PHUB] Error:', e);
     await sock.sendMessage(from, {
       text: `❌ *Error generating logo*\n\n${e.message}\n\n💡 The logo service is currently unavailable. Please try again later.`
     }, { quoted: msg });
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
   }
 });
 

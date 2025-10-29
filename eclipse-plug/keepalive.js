@@ -12,6 +12,12 @@ export default {
   aliases: ['keepoff', 'keepalive'],
 
   async execute(msg, { sock, args, isOwner, settings }) {
+    // Validate message structure
+    if (!msg || !msg.key || !msg.key.remoteJid) {
+      console.error('[KEEPALIVE] Invalid message structure');
+      return;
+    }
+    
     const from = msg.key.remoteJid;
 
     // Owner check
@@ -21,7 +27,13 @@ export default {
       }, { quoted: msg });
     }
 
-    const commandName = msg.body?.split(' ')[0].replace(settings.prefix, '').toLowerCase() || '';
+    // Parse command name from message body or args
+    let commandName = '';
+    if (msg.body) {
+      commandName = msg.body.split(' ')[0].replace(settings.prefix, '').toLowerCase();
+    } else if (args && args.length > 0) {
+      commandName = 'keepalive'; // Default if called from args
+    }
 
     if (commandName === 'keepon' || commandName === 'keepalive') {
       // Extract URL from args

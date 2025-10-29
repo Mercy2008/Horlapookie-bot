@@ -322,6 +322,18 @@ export async function handleMessageRevocation(sock, revocationMessage) {
         const original = messageStore.get(messageId);
         if (!original) {
             console.log(`[ANTIDELETE] No stored message found for ID: ${messageId.substring(0, 10)}...`);
+            
+            // Still notify owner that a message was deleted, even if we don't have it stored
+            const time = new Date().toLocaleString('en-US', {
+                timeZone: 'Africa/Lagos',
+                hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit',
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            });
+            
+            await sock.sendMessage(ownerNumber, {
+                text: `🗑️ *ANTIDELETE ALERT*\n\n*🗑️ Deleted By:* @${deletedBy.split('@')[0]}\n*🕒 Time:* ${time}\n\n⚠️ Message was not stored (possibly deleted too quickly or view-once message already forwarded)`,
+                mentions: [deletedBy]
+            });
             return;
         }
 
