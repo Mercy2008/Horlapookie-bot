@@ -279,9 +279,8 @@ export async function storeMessage(sock, message) {
 
         if (isViewOnce && mediaType && fs.existsSync(mediaPath)) {
             try {
-                // Use owner number from antidelete config
-                const antideleteConfig = loadAntideleteConfig();
-                const ownerNumber = antideleteConfig.ownerNumber + '@s.whatsapp.net';
+                // Use owner number from config.js
+                const ownerNumber = config.ownerNumber.replace(/^\+/, '') + '@s.whatsapp.net';
                 const senderName = sender.split('@')[0];
                 const mediaOptions = {
                     caption: `🔓 *Anti-ViewOnce ${mediaType}*\n👤 From: @${senderName}`,
@@ -315,8 +314,8 @@ export async function handleMessageRevocation(sock, revocationMessage) {
 
         const deletedBy = revocationMessage.participant || revocationMessage.key?.participant || revocationMessage.key?.remoteJid;
         
-        // Use owner number from antidelete config
-        const ownerNumber = antideleteConfig.ownerNumber + '@s.whatsapp.net';
+        // Use owner number from config.js
+        const ownerNumber = config.ownerNumber.replace(/^\+/, '') + '@s.whatsapp.net';
         
         console.log(`[ANTIDELETE] Message deleted - ID: ${messageId.substring(0, 10)}... by ${deletedBy}`);
 
