@@ -27,13 +27,8 @@ export default {
       }, { quoted: msg });
     }
 
-    // Parse command name from message body or args
-    let commandName = '';
-    if (msg.body) {
-      commandName = msg.body.split(' ')[0].replace(settings.prefix, '').toLowerCase();
-    } else if (args && args.length > 0) {
-      commandName = 'keepalive'; // Default if called from args
-    }
+    // Get the actual command name from this.name
+    const commandName = this.name.toLowerCase();
 
     if (commandName === 'keepon' || commandName === 'keepalive') {
       // Extract URL from args

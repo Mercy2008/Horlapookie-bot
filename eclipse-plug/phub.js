@@ -80,7 +80,7 @@ const phub = horla({
     }
 
     if (!success) {
-      throw new Error('All API endpoints failed');
+      throw new Error('All logo generation services are currently unavailable. This could be due to:\n• API rate limits\n• Service downtime\n• Network connectivity issues\n\nPlease try again in a few minutes.');
     }
 
   } catch (e) {

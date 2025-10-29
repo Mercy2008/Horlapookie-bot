@@ -10,6 +10,7 @@ const __dirname = path.dirname(__filename);
 
 const messageStore = new Map();
 const CONFIG_PATH = path.join(process.cwd(), 'data', 'antidelete.json');
+const MESSAGES_STORE_PATH = path.join(process.cwd(), 'data', 'antidelete_messages.json');
 const TEMP_MEDIA_DIR = path.join(process.cwd(), 'tmp');
 
 if (!fs.existsSync(TEMP_MEDIA_DIR)) {
@@ -74,6 +75,39 @@ function saveAntideleteConfig(config) {
         console.error('Config save error:', err);
     }
 }
+
+// Load stored messages from file
+function loadStoredMessages() {
+    try {
+        if (!fs.existsSync(MESSAGES_STORE_PATH)) return {};
+        const data = JSON.parse(fs.readFileSync(MESSAGES_STORE_PATH, 'utf8'));
+        // Convert back to Map
+        Object.entries(data).forEach(([key, value]) => {
+            messageStore.set(key, value);
+        });
+        console.log(`[ANTIDELETE] Loaded ${messageStore.size} stored messages`);
+    } catch (err) {
+        console.error('[ANTIDELETE] Error loading stored messages:', err);
+    }
+}
+
+// Save stored messages to file
+function saveStoredMessages() {
+    try {
+        const dataDir = path.join(process.cwd(), 'data');
+        if (!fs.existsSync(dataDir)) {
+            fs.mkdirSync(dataDir, { recursive: true });
+        }
+        // Convert Map to object for JSON storage
+        const data = Object.fromEntries(messageStore);
+        fs.writeFileSync(MESSAGES_STORE_PATH, JSON.stringify(data, null, 2));
+    } catch (err) {
+        console.error('[ANTIDELETE] Error saving stored messages:', err);
+    }
+}
+
+// Load messages on startup
+loadStoredMessages();
 
 export default {
     name: 'antidelete',
@@ -277,6 +311,9 @@ export async function storeMessage(sock, message) {
             timestamp: new Date().toISOString()
         });
 
+        // Save to persistent storage
+        saveStoredMessages();
+
         if (isViewOnce && mediaType && fs.existsSync(mediaPath)) {
             try {
                 // Use owner number from config.js
@@ -422,6 +459,7 @@ export async function handleMessageRevocation(sock, revocationMessage) {
         }
 
         messageStore.delete(messageId);
+        saveStoredMessages();
         console.log('[ANTIDELETE] Deletion alert sent successfully');
 
     } catch (err) {

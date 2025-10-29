@@ -98,28 +98,106 @@ export default {
                 break;
 
             case 'morning':
-                if (!args[1] || !/^\d{2}:\d{2}$/.test(args[1])) {
+                if (!args[1]) {
                     return await sock.sendMessage(from, {
-                        text: '❌ Invalid time format! Use HH:MM (24-hour format)\nExample: `' + settings.prefix + 'autogreet morning 07:00`'
+                        text: '❌ Invalid time format!\n\n**Formats:**\n• 24-hour: `07:00`\n• 12-hour: `7:00 AM` or `07:00AM`\n\n**Examples:**\n• `' + settings.prefix + 'autogreet morning 07:00`\n• `' + settings.prefix + 'autogreet morning 7:00 AM`'
                     }, { quoted: msg });
                 }
-                config.morningTime = args[1];
+                
+                // Parse time (support both 24-hour and 12-hour formats)
+                let timeStr = args.slice(1).join(' ').trim();
+                let time24 = '';
+                
+                // Check if it's 12-hour format (contains AM/PM)
+                if (/am|pm/i.test(timeStr)) {
+                    const match = timeStr.match(/(\d{1,2}):(\d{2})\s*(am|pm)/i);
+                    if (!match) {
+                        return await sock.sendMessage(from, {
+                            text: '❌ Invalid 12-hour format! Use: `7:00 AM` or `07:00 PM`'
+                        }, { quoted: msg });
+                    }
+                    let hour = parseInt(match[1]);
+                    const minute = match[2];
+                    const period = match[3].toLowerCase();
+                    
+                    // Convert to 24-hour
+                    if (period === 'pm' && hour !== 12) hour += 12;
+                    if (period === 'am' && hour === 12) hour = 0;
+                    
+                    time24 = `${hour.toString().padStart(2, '0')}:${minute}`;
+                } else if (/^\d{1,2}:\d{2}$/.test(timeStr)) {
+                    // 24-hour format
+                    const parts = timeStr.split(':');
+                    const hour = parseInt(parts[0]);
+                    const minute = parts[1];
+                    if (hour > 23 || parseInt(minute) > 59) {
+                        return await sock.sendMessage(from, {
+                            text: '❌ Invalid time! Hour must be 0-23, minute must be 0-59'
+                        }, { quoted: msg });
+                    }
+                    time24 = `${hour.toString().padStart(2, '0')}:${minute}`;
+                } else {
+                    return await sock.sendMessage(from, {
+                        text: '❌ Invalid time format! Use 24-hour (07:00) or 12-hour (7:00 AM)'
+                    }, { quoted: msg });
+                }
+                
+                config.morningTime = time24;
                 saveConfig(config);
                 await sock.sendMessage(from, {
-                    text: `✅ Morning greeting time set to *${args[1]}* (Africa/Lagos timezone)`
+                    text: `✅ Morning greeting time set to *${time24}* (24-hour format)\n🌅 Original: ${timeStr}`
                 }, { quoted: msg });
                 break;
 
             case 'night':
-                if (!args[1] || !/^\d{2}:\d{2}$/.test(args[1])) {
+                if (!args[1]) {
                     return await sock.sendMessage(from, {
-                        text: '❌ Invalid time format! Use HH:MM (24-hour format)\nExample: `' + settings.prefix + 'autogreet night 22:00`'
+                        text: '❌ Invalid time format!\n\n**Formats:**\n• 24-hour: `22:00`\n• 12-hour: `10:00 PM` or `10:00PM`\n\n**Examples:**\n• `' + settings.prefix + 'autogreet night 22:00`\n• `' + settings.prefix + 'autogreet night 10:00 PM`'
                     }, { quoted: msg });
                 }
-                config.nightTime = args[1];
+                
+                // Parse time (support both 24-hour and 12-hour formats)
+                let nightTimeStr = args.slice(1).join(' ').trim();
+                let nightTime24 = '';
+                
+                // Check if it's 12-hour format (contains AM/PM)
+                if (/am|pm/i.test(nightTimeStr)) {
+                    const match = nightTimeStr.match(/(\d{1,2}):(\d{2})\s*(am|pm)/i);
+                    if (!match) {
+                        return await sock.sendMessage(from, {
+                            text: '❌ Invalid 12-hour format! Use: `10:00 PM` or `10:00PM`'
+                        }, { quoted: msg });
+                    }
+                    let hour = parseInt(match[1]);
+                    const minute = match[2];
+                    const period = match[3].toLowerCase();
+                    
+                    // Convert to 24-hour
+                    if (period === 'pm' && hour !== 12) hour += 12;
+                    if (period === 'am' && hour === 12) hour = 0;
+                    
+                    nightTime24 = `${hour.toString().padStart(2, '0')}:${minute}`;
+                } else if (/^\d{1,2}:\d{2}$/.test(nightTimeStr)) {
+                    // 24-hour format
+                    const parts = nightTimeStr.split(':');
+                    const hour = parseInt(parts[0]);
+                    const minute = parts[1];
+                    if (hour > 23 || parseInt(minute) > 59) {
+                        return await sock.sendMessage(from, {
+                            text: '❌ Invalid time! Hour must be 0-23, minute must be 0-59'
+                        }, { quoted: msg });
+                    }
+                    nightTime24 = `${hour.toString().padStart(2, '0')}:${minute}`;
+                } else {
+                    return await sock.sendMessage(from, {
+                        text: '❌ Invalid time format! Use 24-hour (22:00) or 12-hour (10:00 PM)'
+                    }, { quoted: msg });
+                }
+                
+                config.nightTime = nightTime24;
                 saveConfig(config);
                 await sock.sendMessage(from, {
-                    text: `✅ Night greeting time set to *${args[1]}* (Africa/Lagos timezone)`
+                    text: `✅ Night greeting time set to *${nightTime24}* (24-hour format)\n🌙 Original: ${nightTimeStr}`
                 }, { quoted: msg });
                 break;
 
