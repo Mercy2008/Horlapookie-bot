@@ -46,7 +46,6 @@
     "openid-client": "^6.7.1",
     "pastebin-js": "^1.0.6",
     "pino": "^8.21.0",
-    "pm2": "^6.0.10",
     "socket.io": "^4.8.1",
     "translatte": "^3.0.1",
     "uuid": "^11.1.0",
