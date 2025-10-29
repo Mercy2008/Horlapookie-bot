@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { downloadContentFromMessage } from '@whiskeysockets/baileys';
 import { writeFile } from 'fs/promises';
+import config from '../../config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -304,16 +305,18 @@ export async function storeMessage(sock, message) {
 
 export async function handleMessageRevocation(sock, revocationMessage) {
     try {
-        const config = loadAntideleteConfig();
-        if (!config.enabled) return;
+        const antideleteConfig = loadAntideleteConfig();
+        if (!antideleteConfig.enabled) return;
 
         const messageId = revocationMessage.message?.protocolMessage?.key?.id;
         if (!messageId) return;
 
         const deletedBy = revocationMessage.participant || revocationMessage.key?.participant || revocationMessage.key?.remoteJid;
-        const ownerNumber = sock.user.id.split(':')[0] + '@s.whatsapp.net';
-
-        if (!deletedBy || deletedBy.includes(sock.user.id) || deletedBy === ownerNumber) return;
+        
+        // Use owner number from config.js
+        const ownerNumber = config.ownerNumber + '@s.whatsapp.net';
+        
+        console.log(`[ANTIDELETE] Message deleted - ID: ${messageId.substring(0, 10)}... by ${deletedBy}`);
 
         const original = messageStore.get(messageId);
         if (!original) {

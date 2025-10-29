@@ -26,7 +26,7 @@ const platformName = {
 }[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
 
 // Get total command count dynamically
-const totalCommands = (global.commands?.size || 338) + (global.selfCommands?.size || 23);
+const totalCommands = (global.commands?.size || 338) + (global.selfCommands?.size || 24);
 
 // Get current time and date
 const now = new Date();
@@ -403,6 +403,7 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}antidelete (self) - track deleted messages
 ┃✪  ${prefix}antilink - prevent links in groups
 ┃✪  ${prefix}antibug - anti-spam protection
+┃✪  ${prefix}cleartmp (self) - clear temporary media files
 ╰━━━━━━━━━━━━━━━━━⊷
 
 ╭━━━✦❮ 📁 FILE MANAGEMENT ❯✦━⊷

@@ -227,6 +227,8 @@ Preferred communication style: Simple, everyday language.
   - Both features save media temporarily and notify owner with deleted content
   - Added proper ES6 module structure for both commands
   - Integrated call event handler and protocol message handling in index.js
+  - Fixed antidelete to use owner number from config.js for reliable notifications
+  - Sends deleted message alerts immediately to owner with full media recovery
   
 - **Auto-Greeting System**: Created automatic time-based greeting system
   - **goodmorning** command: Sends sweet morning messages with motivational quotes
@@ -236,6 +238,17 @@ Preferred communication style: Simple, everyday language.
   - Prevents duplicate greetings with date tracking
   - Uses API-based messages with fallback to default quotes
   - Scheduler prevents duplicate intervals on reconnects
+  
+- **Keepalive Command Fix**: Fixed keepalive command
+  - Updated to use correct ES6 function signature (msg, { sock, args, isOwner, settings })
+  - Fixed "sock.sendMessage is not a function" error
+  - Now properly accessible to bot owner with correct authorization check
+  
+- **ClearTmp Command**: Added new utility command to manage temporary media storage
+  - **cleartmp (Self Mode)**: Clears all files in /tmp folder
+  - Shows cleanup statistics (files deleted, space freed)
+  - Useful for managing antidelete media storage
+  - Owner-only access for security
   
 - **Update Command Fix**: Fixed bot update mechanism
   - Added git to Dockerfile system dependencies
@@ -247,7 +260,8 @@ Preferred communication style: Simple, everyday language.
   - Added anticall and antidelete to ANTI-COMMANDS category
   - Added autogreet to AUTOMATION COMMANDS category
   - Added goodmorning and goodnight to GAMES & FUN category
-  - Updated plugin count to 361 commands (338 public + 23 self)
+  - Added cleartmp to ANTI-COMMANDS category
+  - Updated plugin count to 362 commands (338 public + 24 self)
 
 ### October 28, 2025
 - **WRG Game Enhancement**: Updated Word Random Game (WRG) to use live dictionary API validation instead of static words.txt file

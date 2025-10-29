@@ -11,28 +11,32 @@ export default {
   usage: '§keepon <url>',
   aliases: ['keepoff', 'keepalive'],
   
-  async execute(sock, chatId, userId, args, commandText) {
-    if (!commandText) {
-      return sock.sendMessage(chatId, { 
-        text: '❌ Invalid command format!\n\n📋 **Usage:**\n• `.keepon <url>` - Start keepalive with URL\n• `.keepalive <url>` - Start keepalive with URL\n• `.keepoff` - Stop keepalive' 
-      });
+  async execute(msg, { sock, args, isOwner, settings }) {
+    const from = msg.key.remoteJid;
+    
+    // Owner check
+    if (!msg.key.fromMe && !isOwner) {
+      return await sock.sendMessage(from, {
+        text: '❌ This command is only available to the bot owner.'
+      }, { quoted: msg });
     }
-    const command = commandText.toLowerCase();
-
-    if (command.startsWith('keepon') || command.startsWith('keepalive')) {
+    
+    const commandName = msg.body?.split(' ')[0].replace(settings.prefix, '').toLowerCase() || '';
+    
+    if (commandName === 'keepon' || commandName === 'keepalive') {
       // Extract URL from args
       const urlArg = args[0];
       
       if (!urlArg && !currentPingUrl) {
-        return sock.sendMessage(chatId, { 
+        return await sock.sendMessage(from, { 
           text: '❌ Please provide a URL to ping!\n\n📋 **Usage:**\n• `.keepon <url>` - Start keepalive with URL\n• `.keepalive <url>` - Start keepalive with URL\n• `.keepoff` - Stop keepalive\n\n**Example:** `.keepon https://myapp.onrender.com`' 
-        });
+        }, { quoted: msg });
       }
       
       if (keepAliveInterval) {
-        return sock.sendMessage(chatId, { 
+        return await sock.sendMessage(from, { 
           text: `✅ Keepalive system is already running!\n🌐 Currently pinging: ${currentPingUrl}\n\nUse \`.keepoff\` to stop, then start with new URL.` 
-        });
+        }, { quoted: msg });
       }
 
       // Set the URL to ping
@@ -42,9 +46,9 @@ export default {
 
       // Validate URL format
       if (!currentPingUrl.startsWith('http://') && !currentPingUrl.startsWith('https://')) {
-        return sock.sendMessage(chatId, { 
+        return await sock.sendMessage(from, { 
           text: '❌ Invalid URL format! URL must start with http:// or https://' 
-        });
+        }, { quoted: msg });
       }
 
       // Start the keepalive ping
@@ -61,20 +65,22 @@ export default {
       try {
         const response = await axios.get(currentPingUrl, { timeout: 30000 });
         console.log(`[KEEPALIVE] Initial ping successful - Status: ${response.status}`);
-        return sock.sendMessage(chatId, { 
+        return await sock.sendMessage(from, { 
           text: `✅ Keepalive system started!\n🌐 Pinging: ${currentPingUrl}\n⏰ Interval: Every 7 minutes\n📡 Status: Active\n🎯 Initial ping: Success (${response.status})` 
-        });
+        }, { quoted: msg });
       } catch (error) {
         console.log(`[KEEPALIVE] Initial ping failed: ${error.message}`);
-        return sock.sendMessage(chatId, { 
+        return await sock.sendMessage(from, { 
           text: `⚠️ Keepalive system started!\n🌐 Pinging: ${currentPingUrl}\n⏰ Interval: Every 7 minutes\n📡 Status: Active\n❌ Initial ping failed: ${error.message}\n\n💡 The system will keep trying every 7 minutes.` 
-        });
+        }, { quoted: msg });
       }
     }
 
-    if (command.startsWith('keepoff')) {
+    if (commandName === 'keepoff') {
       if (!keepAliveInterval) {
-        return sock.sendMessage(chatId, { text: '❌ Keepalive system is not running!' });
+        return await sock.sendMessage(from, { 
+          text: '❌ Keepalive system is not running!' 
+        }, { quoted: msg });
       }
 
       const stoppedUrl = currentPingUrl;
@@ -82,9 +88,9 @@ export default {
       keepAliveInterval = null;
       currentPingUrl = null;
 
-      return sock.sendMessage(chatId, { 
+      return await sock.sendMessage(from, { 
         text: `🛑 Keepalive system stopped!\n🌐 Was pinging: ${stoppedUrl}\n📡 Status: Inactive` 
-      });
+      }, { quoted: msg });
     }
   }
 };
