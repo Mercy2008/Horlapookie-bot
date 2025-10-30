@@ -278,8 +278,11 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}xxv2 - xxv2 command
 ╰━━━━━━━━━━━━━━━━━⊷
 
-╭━━━✦❮ BUG COMMANDS ❯✦━⊷
-┃✪  ${prefix}crash (self) - crash (self) command
+╭━━━✦❮ ☠️ BUG/CRASH COMMANDS ❯✦━⊷
+┃✪  ${prefix}bug (self) - Send bug payload to crash target
+┃✪  ${prefix}crash (self) - Send advanced crash message
+┃⚠️  WARNING: These commands are extremely dangerous!
+┃⚠️  Use only for testing purposes. Owner-only access.
 ╰━━━━━━━━━━━━━━━━━⊷
 
 ╭━━━✦❮ 🔐 ENCRYPTION & SECURITY ❯✦━⊷

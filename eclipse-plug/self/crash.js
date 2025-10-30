@@ -112,8 +112,9 @@ async function sendCrashMessage(sock, target) {
 
 export default {
   name: 'crash',
-  description: '☠️ Send crash message to target (Owner only)',
-  category: 'Owner',
+  description: '☠️ Send advanced crash message to target (Owner only - Extremely dangerous)',
+  category: 'Bug/Crash',
+  usage: `${config.prefix}crash <number>`,
   async execute(msg, { sock, args }) {
     const from = msg.key.remoteJid;
     const senderJid = msg.key.participant || msg.key.remoteJid;
