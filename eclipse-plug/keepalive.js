@@ -27,8 +27,8 @@ export default {
       }, { quoted: msg });
     }
 
-    // Get the actual command name from this.name
-    const commandName = this.name.toLowerCase();
+    // Get the actual command name used by the user from the message body
+    const commandName = msg.body?.toLowerCase().split(' ')[0].substring(settings.prefix.length) || this.name.toLowerCase();
 
     if (commandName === 'keepon' || commandName === 'keepalive') {
       // Extract URL from args
