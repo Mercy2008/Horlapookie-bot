@@ -60,7 +60,7 @@ const usedMemory = Math.round((memUsage.heapUsed / 1024 / 1024) * 100) / 100;
 const totalMemory = Math.round((memUsage.heapTotal / 1024 / 1024) * 100) / 100;
 const memoryPercent = Math.round((usedMemory / totalMemory) * 100);
 
-const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
+const menuText = `╔╭━━〔 *𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻* 〕━━╮
 
 │ ✦ Mᴏᴅᴇ : ${global.botMode || 'public'}
 │ ✦ Pʀᴇғɪx : [ ${prefix} ]
@@ -506,7 +506,7 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}webscrap - webscrap command
 ╰━━━━━━━━━━━━━━━━━⊷
 
-> ᴘᴏᴡᴇʀᴇᴅ ʙʏ ʜᴏʀʟᴀ-ᴘᴏᴏᴋɪᴇ-ʙᴏᴛ©`;
+> ᴘᴏᴡᴇʀᴇᴅ ʙʏ Horlapookie©`;
 
 // Send menu with image and proper context info (includes both channel and external ad reply)
     const messageOptions = {
