@@ -1149,7 +1149,15 @@ Type ${botPrefix}menu to see all commands
                   const keepaliveModule = await import('./eclipse-plug/keepalive.js');
                   // Parse the full command with URL arguments
                   const fullArgs = body.slice(COMMAND_PREFIX.length).trim().split(/\s+/);
-                  await keepaliveModule.default.execute(sock, remoteJid, senderNumber, fullArgs.slice(1), body.slice(COMMAND_PREFIX.length).trim());
+                  const cmdArgs = fullArgs.slice(1); // Remove command name, keep only arguments
+                  
+                  // Call with the correct signature that keepalive.js expects
+                  await keepaliveModule.default.execute(msg, {
+                    sock,
+                    args: cmdArgs,
+                    isOwner: true,
+                    settings: { prefix: COMMAND_PREFIX }
+                  });
                   return;
                 } catch (error) {
                   console.log(color(`[ERROR] Keepalive command error: ${error.message}`, 'red'));
