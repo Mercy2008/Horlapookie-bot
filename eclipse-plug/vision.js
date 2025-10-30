@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
 import path from 'path';
+import config from '../config.js';
 
 const emojisPath = path.join(process.cwd(), 'data', 'emojis.json');
 const emojis = JSON.parse(fs.readFileSync(emojisPath, 'utf8'));
@@ -37,10 +38,10 @@ export default {
         'buffer'
       );
 
-      const apiKey = process.env.GEMINI_API_KEY;
+      const apiKey = config.geminiApiKey;
       if (!apiKey) {
         return await sock.sendMessage(from, {
-          text: `${emojis.error} *Gemini API key not found!*\n\n⚙️ Please set GEMINI_API_KEY environment variable.\n\n📝 Get your free API key at:\nhttps://makersuite.google.com/app/apikey`
+          text: `${emojis.error} *Gemini API key not found!*\n\n⚙️ Please set geminiApiKey in settings.js.\n\n📝 Get your free API key at:\nhttps://makersuite.google.com/app/apikey`
         }, { quoted: msg });
       }
 
