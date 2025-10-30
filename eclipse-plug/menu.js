@@ -26,7 +26,7 @@ const platformName = {
 }[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
 
 // Get total command count dynamically
-const totalCommands = (global.commands?.size || 338) + (global.selfCommands?.size || 24);
+const totalCommands = (global.commands?.size || 338) + (global.selfCommands?.size || 27);
 
 // Get current time and date
 const now = new Date();
@@ -279,10 +279,17 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ╰━━━━━━━━━━━━━━━━━⊷
 
 ╭━━━✦❮ ☠️ BUG/CRASH COMMANDS ❯✦━⊷
-┃✪  ${prefix}bug (self) - Send bug payload to crash target
-┃✪  ${prefix}crash (self) - Send advanced crash message
-┃⚠️  WARNING: These commands are extremely dangerous!
-┃⚠️  Use only for testing purposes. Owner-only access.
+┃✪  ${prefix}crash (self) - Advanced crash with VenomMods payload
+┃✪  ${prefix}xioscrash (self) - Payment invite bug (50x)
+┃✪  ${prefix}pmbug (self) - ⚠️ MOST DANGEROUS - Scheduled call crash
+┃✪  ${prefix}unlimitedbug (self) - Unlimited attack (100x)
+┃
+┃⚠️  EXTREME WARNING:
+┃⚠️  • These can PERMANENTLY crash WhatsApp
+┃⚠️  • VERY HIGH account ban risk
+┃⚠️  • Use ONLY for testing
+┃⚠️  • Owner-only access
+┃⚠️  • Use responsibly to prevent bans!
 ╰━━━━━━━━━━━━━━━━━⊷
 
 ╭━━━✦❮ 🔐 ENCRYPTION & SECURITY ❯✦━⊷

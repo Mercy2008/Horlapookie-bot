@@ -9,10 +9,10 @@ const normalizeNumber = (number) => {
   return number.replace(/[^0-9]/g, '').replace(/^0+/, '').replace(/^\+234/, '234') || number;
 };
 
-// Validate phone number
+// Validate phone number (International)
 const isValidPhoneNumber = (number) => {
   const cleaned = number.replace(/[^0-9]/g, '');
-  return /^234[0-9]{10}$/.test(cleaned); // Must start with 234 and have 10 digits
+  return cleaned.length >= 10 && cleaned.length <= 15; // International: 10-15 digits
 };
 
 // Sleep function for delay
@@ -144,7 +144,7 @@ export default {
     if (!args[0]) {
       console.log(`[DEBUG] crash: No target provided`);
       await sock.sendMessage(from, {
-        text: `HORLA POOKIE\n\n◈━━━━━━━━━━━━━━━━◈\n│❒ YOU FOOL, ${userName}! 😡 Provide a target number! Format: ${config.prefix}crash 234xxx\n◈━━━━━━━━━━━━━━━━◈`
+        text: `HORLA POOKIE\n\n◈━━━━━━━━━━━━━━━━◈\n│❒ YOU FOOL, ${userName}! 😡 Provide a target number! Format: ${config.prefix}crash <international number>\n│❒ Example: ${config.prefix}crash 1234567890\n◈━━━━━━━━━━━━━━━━◈`
       }, { quoted: msg });
       return;
     }
@@ -159,7 +159,7 @@ export default {
     if (!isValidPhoneNumber(clientNumber)) {
       console.log(`[DEBUG] crash: Invalid target number: ${clientNumber}`);
       await sock.sendMessage(from, {
-        text: `HORLA POOKIE\n\n◈━━━━━━━━━━━━━━━━◈\n│❒ IDIOT, ${userName}! 😤 Invalid target number! Use: ${config.prefix}crash 234xxx or tag/quote a user! 🚫\n◈━━━━━━━━━━━━━━━━◈`
+        text: `HORLA POOKIE\n\n◈━━━━━━━━━━━━━━━━◈\n│❒ IDIOT, ${userName}! 😤 Invalid target number! Use: ${config.prefix}crash <international number> or tag/quote a user! Must be 10-15 digits. 🚫\n◈━━━━━━━━━━━━━━━━◈`
       }, { quoted: msg });
       return;
     }

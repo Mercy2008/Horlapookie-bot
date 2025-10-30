@@ -53,6 +53,42 @@ When the bot starts successfully, you'll see this welcome message:
 
 *The bot sends an automated welcome message with connection details when it comes online*
 
+## ⚠️ CRITICAL WARNING - Bug/Crash Commands
+
+**EXTREME CAUTION REQUIRED!**
+
+This bot includes powerful bug/crash commands that can permanently damage WhatsApp accounts. **USE RESPONSIBLY!**
+
+### 🚨 **Account Ban Risk**
+- These commands can result in **PERMANENT ACCOUNT BANS**
+- WhatsApp actively detects and bans accounts using crash exploits
+- **YOU** are responsible for how you use these features
+- The creator (Horlapookie) is **NOT** liable for any bans or damages
+
+### ☠️ **Available Bug Commands** (Owner-Only)
+1. **crash** - Advanced crash with VenomMods payload (5x attacks)
+2. **xioscrash** - Payment invite bug (50x attacks)
+3. **pmbug** - ⚠️ MOST DANGEROUS - Scheduled call crash (30x, 216KB payload)
+4. **unlimitedbug** - Unlimited attack (100x attacks, 20MB total)
+
+### ✅ **Safe Usage Guidelines**
+- ✅ **ONLY** use on test numbers you own
+- ✅ **NEVER** use on real people without consent
+- ✅ Use sparingly - wait 5-10 minutes between attacks
+- ✅ Understand that these are **testing tools** only
+- ✅ Keep your bot in **self mode** when testing
+- ❌ **DO NOT** spam these commands
+- ❌ **DO NOT** use for harassment or malicious purposes
+
+### 📱 **International Support**
+- All bug commands support international numbers (10-15 digits)
+- Works with any country code
+- Examples: US (1), UK (44), India (91), Nigeria (234), etc.
+
+**BY USING THESE COMMANDS, YOU ACCEPT FULL RESPONSIBILITY FOR ANY CONSEQUENCES!**
+
+---
+
 ## ✨ Features
 
 ### 🤖 AI & Automation
