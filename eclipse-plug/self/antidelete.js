@@ -201,7 +201,10 @@ export async function storeMessage(sock, message) {
 
         const sender = message.key.participant || message.key.remoteJid;
 
-        const viewOnceContainer = message.message?.viewOnceMessageV2?.message || message.message?.viewOnceMessage?.message;
+        // Check for view-once messages with multiple format support (V1, V2, V2Extension)
+        const viewOnceContainer = message.message?.viewOnceMessageV2?.message || 
+                                  message.message?.viewOnceMessage?.message ||
+                                  message.message?.viewOnceMessageV2Extension?.message;
         
         if (viewOnceContainer) {
             isViewOnce = true;
@@ -217,8 +220,9 @@ export async function storeMessage(sock, message) {
                     const buffer = Buffer.concat(chunks);
                     mediaPath = path.join(TEMP_MEDIA_DIR, `${messageId}.jpg`);
                     await writeFile(mediaPath, buffer);
+                    console.log(`[ANTIDELETE] View-once image saved: ${messageId}`);
                 } catch (err) {
-                    console.error('Error downloading view-once image:', err);
+                    console.error('[ANTIDELETE] Error downloading view-once image:', err);
                 }
             } else if (viewOnceContainer.videoMessage) {
                 mediaType = 'video';
@@ -232,8 +236,27 @@ export async function storeMessage(sock, message) {
                     const buffer = Buffer.concat(chunks);
                     mediaPath = path.join(TEMP_MEDIA_DIR, `${messageId}.mp4`);
                     await writeFile(mediaPath, buffer);
+                    console.log(`[ANTIDELETE] View-once video saved: ${messageId}`);
                 } catch (err) {
-                    console.error('Error downloading view-once video:', err);
+                    console.error('[ANTIDELETE] Error downloading view-once video:', err);
+                }
+            } else if (viewOnceContainer.audioMessage) {
+                mediaType = 'audio';
+                content = 'View-once audio message';
+                try {
+                    const stream = await downloadContentFromMessage(viewOnceContainer.audioMessage, 'audio');
+                    const chunks = [];
+                    for await (const chunk of stream) {
+                        chunks.push(chunk);
+                    }
+                    const buffer = Buffer.concat(chunks);
+                    const mime = viewOnceContainer.audioMessage.mimetype || '';
+                    const ext = mime.includes('mpeg') ? 'mp3' : (mime.includes('ogg') ? 'ogg' : 'mp3');
+                    mediaPath = path.join(TEMP_MEDIA_DIR, `${messageId}.${ext}`);
+                    await writeFile(mediaPath, buffer);
+                    console.log(`[ANTIDELETE] View-once audio saved: ${messageId}`);
+                } catch (err) {
+                    console.error('[ANTIDELETE] Error downloading view-once audio:', err);
                 }
             }
         } else if (message.message?.conversation) {

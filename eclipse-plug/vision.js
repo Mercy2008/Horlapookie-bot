@@ -1,7 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { downloadContentFromMessage } from '@whiskeysockets/baileys';
 import fs from 'fs';
 import path from 'path';
-import config from '../config.js';
+import settings from '../settings.js';
 
 const emojisPath = path.join(process.cwd(), 'data', 'emojis.json');
 const emojis = JSON.parse(fs.readFileSync(emojisPath, 'utf8'));
@@ -33,12 +34,15 @@ export default {
 
       const imageMessage = msg.message?.imageMessage || quotedMsg?.imageMessage;
       
-      const imageBuffer = await sock.downloadMediaMessage(
-        { message: { imageMessage } },
-        'buffer'
-      );
+      // Download image using Baileys method
+      const stream = await downloadContentFromMessage(imageMessage, 'image');
+      const chunks = [];
+      for await (const chunk of stream) {
+        chunks.push(chunk);
+      }
+      const imageBuffer = Buffer.concat(chunks);
 
-      const apiKey = config.geminiApiKey;
+      const apiKey = settings.geminiApiKey;
       if (!apiKey) {
         return await sock.sendMessage(from, {
           text: `${emojis.error} *Gemini API key not found!*\n\n⚙️ Please set geminiApiKey in settings.js.\n\n📝 Get your free API key at:\nhttps://makersuite.google.com/app/apikey`

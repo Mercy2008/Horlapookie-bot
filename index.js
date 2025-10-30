@@ -1094,6 +1094,9 @@ Type ${botPrefix}menu to see all commands
           }
           if (!body || typeof body !== 'string') return;
 
+          // Attach body to msg object for commands that need it
+          msg.body = body;
+
           console.log(color(`[${isGroup ? 'GROUP' : isNewsletter ? 'NEWSLETTER' : 'DM'}] ${senderNumber}: ${body}`, msg.key.fromMe ? 'magenta' : 'white'));
 
           // Anti-detection for groups using proper antilink system
