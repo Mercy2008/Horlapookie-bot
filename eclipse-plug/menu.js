@@ -139,6 +139,12 @@ const menuText = `╔╭━━〔 *HORLA POOKIE BOT* 〕━━╮
 ┃✪  ${prefix}polly - alias for pollination
 ┃✪  ${prefix}grok - Real Grok.com AI image generation
 ┃✪  ${prefix}grok-direct - Direct Grok.com access
+┃✪  ${prefix}vision - Analyze images with Gemini AI
+┃✪  ${prefix}describe - Describe image content
+┃✪  ${prefix}analyze - Analyze image details
+┃✪  ${prefix}remini - Enhance/upscale images
+┃✪  ${prefix}colorize - Add color to B&W images
+┃✪  ${prefix}dehaze - Remove haze from images
 ┃✪  ${prefix}bing (self) - bing (self) command
 ╰━━━━━━━━━━━━━━━━━⊷
 
