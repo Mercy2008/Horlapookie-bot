@@ -5,7 +5,7 @@ export default {
   // Giphy API configuration
   giphyApiKey: '',
   // Gemini API configuration
-  geminiApiKey: '',
+  geminiApiKey: 'AIzaSyBUCZp1sNUAL3qy_2k0I_TebhXSjArCYoI',
   // Imgur API configuration
   imgurClientId: '',
   // Copilot API configuration
