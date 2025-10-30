@@ -981,10 +981,8 @@ Type ${botPrefix}menu to see all commands
           if (!senderJid) return;
           const senderNumber = await normalizeJid(sock, senderJid, (isGroup || isNewsletter) ? remoteJid : null);
 
-          // Store message for antidelete tracking
-          if (msg.key.fromMe) {
-            await storeMessage(sock, msg);
-          }
+          // Store ALL messages for antidelete tracking (not just bot's own messages)
+          await storeMessage(sock, msg);
 
           let body = '';
           const messageType = Object.keys(msg.message)[0];
