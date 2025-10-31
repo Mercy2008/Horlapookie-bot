@@ -3,7 +3,7 @@ import settings from './settings.js';
 export default {
   // Bot configuration
   prefix: process.env.BOT_PREFIX || '.', // input your prefix here 
-  ownerNumber: process.env.BOT_OWNER || '2348028336218', // input your number here 
+  ownerNumber: process.env.BOT_OWNER || '2348163251422', // input your number here 
   botName: process.env.BOT_NAME || '𝔼𝕔𝕝𝕚𝕡𝕤𝕖 𝕄𝔻',
   ownerName: process.env.BOT_OWNER_NAME || '𝔼𝕔𝕝𝕚𝕡𝕤𝕖', // optional 
   sessionId: 'ECLIPSE-MD-SESSION-ID', // sensitive name 
